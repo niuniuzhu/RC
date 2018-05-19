@@ -1,0 +1,9 @@
+D:\Projects\RC\Bin\Net.deps.json
+D:\Projects\RC\Bin\Net.dll
+D:\Projects\RC\Bin\Net.pdb
+D:\Projects\RC\Net\obj\Debug\Net.csprojAssemblyReference.cache
+D:\Projects\RC\Net\obj\Debug\Net.csproj.CoreCompileInputs.cache
+D:\Projects\RC\Net\obj\Debug\Net.AssemblyInfoInputs.cache
+D:\Projects\RC\Net\obj\Debug\Net.AssemblyInfo.cs
+D:\Projects\RC\Net\obj\Debug\Net.dll
+D:\Projects\RC\Net\obj\Debug\Net.pdb

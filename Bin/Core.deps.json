@@ -1,0 +1,59 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "a524680fb8543c9b020e289b0e2126ebf74f4a3e"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "Core/1.0.0": {
+        "dependencies": {
+          "ICSharpCode.SharpZipLib.Patched": "0.86.5.1"
+        },
+        "runtime": {
+          "Core.dll": {}
+        }
+      },
+      "ICSharpCode.SharpZipLib.Patched/0.86.5.1": {
+        "dependencies": {
+          "System.Text.Encoding.CodePages": "4.4.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ICSharpCode.SharpZipLib.dll": {}
+        }
+      },
+      "System.Text.Encoding.CodePages/4.4.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.Text.Encoding.CodePages.dll": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp2.0/System.Text.Encoding.CodePages.dll": {
+            "rid": "win",
+            "assetType": "runtime"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ICSharpCode.SharpZipLib.Patched/0.86.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Dib3pjn603X2+bBI2TfDxYc59eNHJHhnqPtcriq6J2HsnW89prL7GjmULVVaB5TRJYuvfhTAouToX6xkTGBjtA==",
+      "path": "icsharpcode.sharpziplib.patched/0.86.5.1",
+      "hashPath": "icsharpcode.sharpziplib.patched.0.86.5.1.nupkg.sha512"
+    },
+    "System.Text.Encoding.CodePages/4.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6JX7ZdaceBiLKLkYt8zJcp4xTJd1uYyXXEkPw6mnlUIjh1gZPIVKPtRXPmY5kLf6DwZmf5YLwR3QUrRonl7l0A==",
+      "path": "system.text.encoding.codepages/4.4.0",
+      "hashPath": "system.text.encoding.codepages.4.4.0.nupkg.sha512"
+    }
+  }
+}
