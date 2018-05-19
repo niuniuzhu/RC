@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netcoreapp2.0</TargetFramework>
+		<OutputPath>Bin\</OutputPath>
+		<RootNamespace>RC.ProtoGen</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Gen.bat" />
+		<None Remove="templates\const_template.txt" />
+		<None Remove="templates\convertions.txt" />
+		<None Remove="templates\dto_template.txt" />
+		<None Remove="templates\mgr_template.txt" />
+		<None Remove="templates\packet_template.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="templates\const_template.txt" />
+		<EmbeddedResource Include="templates\convertions.txt" />
+		<EmbeddedResource Include="templates\dto_template.txt" />
+		<EmbeddedResource Include="templates\mgr_template.txt" />
+		<EmbeddedResource Include="templates\packet_template.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Core\Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\ProtocolGenerator.deps.json
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\ProtocolGenerator.runtimeconfig.json
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\ProtocolGenerator.runtimeconfig.dev.json
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\ProtocolGenerator.dll
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\ProtocolGenerator.pdb
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.csprojResolveAssemblyReference.cache
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.csproj.CoreCompileInputs.cache
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.AssemblyInfoInputs.cache
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.AssemblyInfo.cs
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.dll
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.pdb
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\Core.dll
+D:\Projects\RCFramework\ProtocolGenerator\Bin\netcoreapp2.0\Core.pdb
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.Properties.Resources.resources
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.csproj.GenerateResource.cache
+D:\Projects\RCFramework\ProtocolGenerator\obj\Debug\netcoreapp2.0\ProtocolGenerator.csproj.CopyComplete

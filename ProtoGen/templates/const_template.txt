@@ -1,0 +1,12 @@
+namespace Protocol.Gen
+{
+	public static class Module
+	{
+		[modules \n]public const byte [key] = [id];[/modules]
+	}
+
+	public static class Command
+	{
+		[packets \n]public const ushort [key] = [id];[/packets]
+	}
+}

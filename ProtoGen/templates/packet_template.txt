@@ -1,0 +1,43 @@
+using RC.Core.Net;
+using RC.Core.Net.Protocol;
+
+namespace Protocol.Gen
+{
+	[Packet( [module], [cmd] )]
+	public class [cls_name] : Packet
+	{
+		[option]public [dto_cls_name] dto;[/option]
+
+		public [cls_name]() : base( [module], [cmd] )
+		{
+		}
+
+		[option]public [cls_name]( [dto_cls_name] dto ) : base( [module], [cmd] )
+		{
+			this.dto = dto;
+		}
+
+		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd] )
+		{
+			this.dto = new [dto_cls_name]( [fields ,][field_name][/fields] );
+		}[/ctors][/option]
+
+		protected override void InternalSerialize( StreamBuffer buffer )
+		{
+			base.InternalSerialize( buffer );
+			[option]this.dto.Serialize( buffer );[/option]
+		}
+
+		protected override void InternalDeserialize( StreamBuffer buffer )
+		{
+			base.InternalDeserialize( buffer );
+			[option]this.dto = new [dto_cls_name]();
+			this.dto.Deserialize( buffer );[/option]
+		}
+
+		public override string ToString()
+		{
+			return $"module:{this.module}, cmd:{this.command}[option], dto:{this.dto}[/option]";
+		}
+	}
+}

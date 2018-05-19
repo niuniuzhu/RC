@@ -1,0 +1,63 @@
+// ReSharper disable UnusedMember.Global
+// ReSharper disable InconsistentNaming
+using RC.Core.Net;
+using RC.Core.Net.Protocol;
+using System;
+using System.Collections.Generic;
+
+namespace Protocol.Gen
+{
+	public static class ProtocolManager
+	{
+		private static readonly Dictionary<ushort, Type> DTO_MAP = new Dictionary<ushort, Type>
+		{
+			[dtos \n]{ [id], typeof( [dto_cls_name] ) },[/dtos]
+		};
+
+		private static readonly Dictionary<int, Type> PACKET_MAP = new Dictionary<int, Type>
+		{
+			[packets \n]{ EncodeID( [module], [cmd] ), typeof( [packet_cls_name] ) },[/packets]
+		};
+		
+		public static Type GetDTOType( ushort dtoId )
+		{
+			DTO_MAP.TryGetValue( dtoId, out Type type );
+			return type;
+		}
+		
+		public static Type GetPacketType( byte module, ushort command )
+		{
+			PACKET_MAP.TryGetValue( EncodeID( module, command ), out Type type );
+			return type;
+		}
+
+		public static int EncodeID( byte moduleId, ushort cmd )
+		{
+			return ( moduleId << 16 ) | cmd;
+		}
+
+		[get_dto \n]public static [dto_cls_name] [dto_func_name]( [fields ,][field_type] [field_name][/fields] )
+		{
+			return new [dto_cls_name]( [fields ,][field_name][/fields] );
+		}[/get_dto]
+
+		[get_packet0 \n]public static [packet_cls_name] [packet_func_name]( [dto_cls_name] dto )
+		{
+			return new [packet_cls_name]( dto );
+		}[/get_packet0]
+		[get_packet1 \n]public static [packet_cls_name] [packet_func_name]( [fields ,][field_type] [field_name][/fields] )
+		{
+			return new [packet_cls_name]( [fields ,][field_name][/fields] );
+		}[/get_packet1]
+		[get_packet2 \n]public static void [packet_call_name]( this INetTransmitter transmitter, [dto_cls_name] dto )
+		{
+			transmitter.Send( new [packet_cls_name]( dto ) );
+		}[/get_packet2]
+		[get_packet3 \n]public static void [packet_call_name]( this INetTransmitter transmitter[option], [/option][fields ,][field_type] [field_name][/fields] )
+		{
+			transmitter.Send( new [packet_cls_name]( [fields ,][field_name][/fields] ) );
+		}[/get_packet3]
+	}
+}
+// ReSharper restore InconsistentNaming
+// ReSharper restore UnusedMember.Global

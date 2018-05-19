@@ -1,0 +1,16 @@
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\ProtoGen.deps.json
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\ProtoGen.runtimeconfig.json
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\ProtoGen.runtimeconfig.dev.json
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\ProtoGen.dll
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\ProtoGen.pdb
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\Core.dll
+D:\Projects\RC\ProtoGen\Bin\netcoreapp2.0\Core.pdb
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.csprojAssemblyReference.cache
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\RC.ProtoGen.Properties.Resources.resources
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.csproj.GenerateResource.cache
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.csproj.CoreCompileInputs.cache
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.AssemblyInfoInputs.cache
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.AssemblyInfo.cs
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.csproj.CopyComplete
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.dll
+D:\Projects\RC\ProtoGen\obj\Debug\netcoreapp2.0\ProtoGen.pdb

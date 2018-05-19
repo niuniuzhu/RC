@@ -1,0 +1,42 @@
+{
+	"write":{
+		"byte":"Write",
+		"bool":"Write",
+		"int":"Write",
+		"uint":"Write",
+		"float":"Write",
+		"short":"Write",
+		"ushort":"Write",
+		"long":"Write",
+		"ulong":"Write",
+		"double":"Write",
+		"string":"WriteUTF8",
+		"string2":"WriteUTF8E"
+	},
+	"read":{
+		"byte":"ReadByte",
+		"bool":"ReadBool",
+		"int":"ReadInt",
+		"uint":"ReadUInt",
+		"float":"ReadFloat",
+		"short":"ReadShort",
+		"ushort":"ReadUShort",
+		"long":"ReadLong",
+		"ulong":"ReadULong",
+		"double":"ReadDouble",
+		"string":"ReadUTF8",
+		"string2":"ReadUTF8E"
+	},
+	"convert":{
+		"byte":"byte.Parse({0})",
+		"bool":"bool.Parse({0})",
+		"float":"float.Parse({0})",
+		"int":"int.Parse({0})",
+		"long":"long.Parse({0})",
+		"short":"short.Parse({0})",
+		"ulong":"ulong.Parse({0})",
+		"ushort":"ushort.Parse({0})",
+		"double":"double.Parse({0})",
+		"string":"string.Empty + {0}",
+	}
+}

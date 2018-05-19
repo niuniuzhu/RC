@@ -48,9 +48,11 @@ namespace RC.Net
 		private static readonly Dictionary<string, INetServer> SERVERS = new Dictionary<string, INetServer>();
 		private static readonly Dictionary<string, INetClient> CLIENTS = new Dictionary<string, INetClient>();
 		private static bool _involveKCP;
+
 		public static void SetupKCP()
 		{
 			_involveKCP = true;
+
 			NetworkConfig.BUFFER_SIZE = 512;
 			NetworkConfig.KCP_NO_DELAY = 1;
 			NetworkConfig.KCP_INTERVAL = 20;
