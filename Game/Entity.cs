@@ -1,58 +1,60 @@
 ﻿namespace RC.Game
 {
-	public abstract class Entity : GPoolObject
+	public abstract class Entity : ComponentHolder
 	{
-		public Battle battle { get; internal set; }
+		public static void Destroy( Entity entity )
+		{
+			entity.markToDestroy = true;
+			foreach ( Component component in entity )
+				Component.Destroy( component );
+		}
 
+		public ulong rid { get; internal set; }
+		public Battle battle { get; internal set; }
+		public bool destroied { get; private set; }
 		internal bool markToDestroy { get; private set; }
 
-		protected override void InternalDispose()
+		internal void Awake()
 		{
+			this.OnAwake();
 		}
 
-		public void MarkToDestroy()
+		internal void Destroy()
 		{
-			this.markToDestroy = true;
-		}
 
-		internal void OnAddedToBattle()
-		{
-			this.InternalOnAddedToBattle();
-			this.OnSyncState();
-		}
-
-		internal void OnRemoveFromBattle()
-		{
-			this.InternalOnRemoveFromBattle();
+			this.OnDestroy();
 			this.markToDestroy = false;
-			this.battle = null;
+			this.destroied = true;
 		}
 
-		protected virtual void InternalOnAddedToBattle()
+		internal override void Update( UpdateContext context )
+		{
+			this.OnUpdate( context );
+			base.Update( context );
+		}
+
+		internal void UpdateState( UpdateContext context )
+		{
+			this.OnUpdateState( context );
+		}
+
+		internal void Synchronize()
 		{
 		}
 
-		protected virtual void InternalOnRemoveFromBattle()
+		protected virtual void OnAwake()
 		{
 		}
 
-		protected virtual void OnPositionChanged()
+		protected virtual void OnDestroy()
 		{
 		}
 
-		protected virtual void OnDirectionChanged()
+		protected virtual void OnUpdate( UpdateContext context )
 		{
 		}
 
-		public virtual void OnGenericUpdate( UpdateContext context )
-		{
-		}
-
-		internal virtual void OnUpdateState( UpdateContext context )
-		{
-		}
-
-		internal void OnSyncState()
+		protected virtual void OnUpdateState( UpdateContext context )
 		{
 		}
 	}

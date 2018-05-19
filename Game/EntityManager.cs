@@ -7,7 +7,6 @@ namespace RC.Game
 	{
 		public int entityCount => this._entities.Count;
 
-		private readonly GPool _gPool = new GPool();
 		private readonly List<Entity> _entities = new List<Entity>();
 		private readonly Dictionary<ulong, Entity> _idToEntity = new Dictionary<ulong, Entity>();
 
@@ -22,20 +21,20 @@ namespace RC.Game
 		{
 			int count = this._entities.Count;
 			for ( int i = 0; i < count; i++ )
-				this._entities[i].MarkToDestroy();
+				Entity.Destroy( this._entities[i] );
 			this.DestroyEnties();
-			this._gPool.Dispose();
 			this._battle = null;
 		}
 
 		public T Create<T>() where T : Entity, new()
 		{
-			T entity = this._gPool.Pop<T>();
+			T entity = new T();
 			entity.rid = GuidHash.GetUInt64();
 			entity.battle = this._battle;
 			this._idToEntity[entity.rid] = entity;
 			this._entities.Add( entity );
-			entity.OnAddedToBattle();
+			entity.Awake();
+			entity.Synchronize();
 			return entity;
 		}
 
@@ -54,11 +53,11 @@ namespace RC.Game
 				if ( !entity.markToDestroy )
 					continue;
 
-				entity.OnRemoveFromBattle();
+				entity.Destroy();
+				entity.battle = null;
 
 				this._entities.RemoveAt( i );
 				this._idToEntity.Remove( entity.rid );
-				this._gPool.Push( entity );
 				--i;
 				--count;
 			}
@@ -81,7 +80,7 @@ namespace RC.Game
 			for ( int i = 0; i < count; i++ )
 			{
 				Entity entity = this._entities[i];
-				entity.OnGenericUpdate( context );
+				entity.Update( context );
 			}
 		}
 
@@ -91,7 +90,7 @@ namespace RC.Game
 			for ( int i = 0; i < count; i++ )
 			{
 				Entity entity = this._entities[i];
-				entity.OnUpdateState( context );
+				entity.UpdateState( context );
 			}
 		}
 
@@ -101,7 +100,7 @@ namespace RC.Game
 			for ( int i = 0; i < count; i++ )
 			{
 				Entity entity = this._entities[i];
-				entity.OnSyncState();
+				entity.Synchronize();
 			}
 		}
 	}

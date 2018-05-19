@@ -6,3 +6,4 @@ D:\Projects\RC\Game\obj\Debug\Game.AssemblyInfoInputs.cache
 D:\Projects\RC\Game\obj\Debug\Game.AssemblyInfo.cs
 D:\Projects\RC\Game\obj\Debug\Game.dll
 D:\Projects\RC\Game\obj\Debug\Game.pdb
+D:\Projects\RC\Game\obj\Debug\Game.csprojAssemblyReference.cache
