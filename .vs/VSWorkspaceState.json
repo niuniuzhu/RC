@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Core",
-    "\\Net"
+    "\\Logic",
+    "\\Net",
+    "\\ProtoGen\\Bin",
+    "\\ProtoGen\\Bin\\netcoreapp2.0"
   ],
+  "SelectedNode": "\\Net\\Net.csproj",
   "PreviewInSolutionExplorer": false
 }

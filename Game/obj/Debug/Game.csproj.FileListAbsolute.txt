@@ -1,0 +1,8 @@
+D:\Projects\RC\Bin\Game.deps.json
+D:\Projects\RC\Bin\Game.dll
+D:\Projects\RC\Bin\Game.pdb
+D:\Projects\RC\Game\obj\Debug\Game.csproj.CoreCompileInputs.cache
+D:\Projects\RC\Game\obj\Debug\Game.AssemblyInfoInputs.cache
+D:\Projects\RC\Game\obj\Debug\Game.AssemblyInfo.cs
+D:\Projects\RC\Game\obj\Debug\Game.dll
+D:\Projects\RC\Game\obj\Debug\Game.pdb

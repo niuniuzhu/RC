@@ -6,3 +6,4 @@ D:\Projects\RC\Core\obj\Debug\Core.AssemblyInfoInputs.cache
 D:\Projects\RC\Core\obj\Debug\Core.AssemblyInfo.cs
 D:\Projects\RC\Core\obj\Debug\Core.dll
 D:\Projects\RC\Core\obj\Debug\Core.pdb
+D:\Projects\RC\Core\obj\Debug\Core.csprojAssemblyReference.cache

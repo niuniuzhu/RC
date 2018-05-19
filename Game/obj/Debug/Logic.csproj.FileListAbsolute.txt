@@ -1,0 +1,9 @@
+D:\Projects\RC\Bin\Logic.deps.json
+D:\Projects\RC\Bin\Logic.dll
+D:\Projects\RC\Bin\Logic.pdb
+D:\Projects\RC\Logic\obj\Debug\Logic.csprojAssemblyReference.cache
+D:\Projects\RC\Logic\obj\Debug\Logic.csproj.CoreCompileInputs.cache
+D:\Projects\RC\Logic\obj\Debug\Logic.AssemblyInfoInputs.cache
+D:\Projects\RC\Logic\obj\Debug\Logic.AssemblyInfo.cs
+D:\Projects\RC\Logic\obj\Debug\Logic.dll
+D:\Projects\RC\Logic\obj\Debug\Logic.pdb
