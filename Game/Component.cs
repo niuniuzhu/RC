@@ -72,6 +72,11 @@ namespace RC.Game
 			this.OnUpdate( context );
 		}
 
+		internal void Synchronize()
+		{
+			this.OnSynchronize();
+		}
+
 		protected virtual void OnAwake()
 		{
 		}
@@ -89,6 +94,10 @@ namespace RC.Game
 		}
 
 		protected virtual void OnUpdate( UpdateContext context )
+		{
+		}
+
+		protected virtual void OnSynchronize()
 		{
 		}
 

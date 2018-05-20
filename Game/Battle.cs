@@ -8,6 +8,8 @@ namespace RC.Game
 		public Fix64 deltaTime { get; private set; }
 		public Fix64 time { get; private set; }
 
+		public IDataTransmitter dataTransmitter { get; set; }
+
 		private readonly UpdateContext _context;
 		private readonly EntityManager _entityManager;
 

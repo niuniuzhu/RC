@@ -8,11 +8,9 @@ namespace RC.Game
 	{
 		public byte id { get; }
 
-		public bool alwaysSync;
-
 		public PropertyInfo owner;
 
-		public SynchronizeAttribute( byte id )
+		public SynchronizeAttribute( byte idD )
 		{
 			this.id = id;
 		}

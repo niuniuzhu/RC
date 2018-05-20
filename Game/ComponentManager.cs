@@ -40,6 +40,13 @@ namespace RC.Game
 			this.DestroyComponents();
 		}
 
+		internal void Synchronize()
+		{
+			int count = this._comps.Count;
+			for ( int i = 0; i < count; i++ )
+				this._comps[i].Synchronize();
+		}
+
 		internal void DestroyComponents()
 		{
 			int count = this._comps.Count;

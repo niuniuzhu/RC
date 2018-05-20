@@ -60,6 +60,7 @@ namespace RC.Game
 
 		internal void Synchronize()
 		{
+			this._componentManager.Synchronize();
 		}
 
 		protected virtual void OnAwake()

@@ -39,5 +39,14 @@ namespace RC.Game.Components
 		{
 			this.RemoveProps( component );
 		}
+
+		protected override void OnSynchronize()
+		{
+			foreach ( KeyValuePair<ulong, SynchronizeAttribute[]> kv in this._comIDToSyncProps )
+			{
+				//SynchronizeAttribute[] synchronizeAttributes = kv.Value;
+				//this.owner.battle.dataTransmitter.Push( BuiltinDataType.SYNCHRONIZE, this.owner.rid, kv.Key,   );
+			}
+		}
 	}
 }
