@@ -1,8 +1,18 @@
-﻿namespace RC.Game
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+namespace RC.Game
 {
 	public abstract class Component
 	{
-		public ComponentHolder owner { get; internal set; }
+		public static void Destroy( Component component )
+		{
+			component.markToDestroy = true;
+		}
+
+		public ulong typeID { get; private set; }
+		public Entity owner { get; internal set; }
 		public bool destroied { get; private set; }
 		public bool enabled
 		{
@@ -22,13 +32,9 @@
 
 		private bool _enabled;
 
-		public static void Destroy( Component component )
-		{
-			component.markToDestroy = true;
-		}
-
 		internal void Awake()
 		{
+			this.typeID = BitConverter.ToUInt64( this.GetType().GUID.ToByteArray(), 0 );
 			this.OnAwake();
 			this.enabled = true;
 		}
@@ -49,6 +55,16 @@
 		private void Disable()
 		{
 			this.OnDisable();
+		}
+
+		internal void NotifyComponentAdded( Component component )
+		{
+			this.OnNotifyComponentAdded( component );
+		}
+
+		internal void NotifyComponentDestroied( Component component )
+		{
+			this.OnNotifyComponentDestroied( component );
 		}
 
 		internal void Update( UpdateContext context )
@@ -74,6 +90,34 @@
 
 		protected virtual void OnUpdate( UpdateContext context )
 		{
+		}
+
+		protected virtual void OnNotifyComponentAdded( Component component )
+		{
+		}
+
+		protected virtual void OnNotifyComponentDestroied( Component component )
+		{
+		}
+
+		internal SynchronizeAttribute[] GetSyncProps()
+		{
+			List<SynchronizeAttribute> attributes = new List<SynchronizeAttribute>();
+			Type type = this.GetType();
+			PropertyInfo[] properties = type.GetProperties();
+			int count = properties.Length;
+			for ( int i = 0; i < count; i++ )
+			{
+				PropertyInfo propertyInfo = properties[i];
+				SynchronizeAttribute attribute = propertyInfo.GetCustomAttribute<SynchronizeAttribute>( true );
+				if ( attribute == null )
+					continue;
+				attribute.owner = propertyInfo;
+				attributes.Add( attribute );
+			}
+			if ( attributes.Count == 0 )
+				return null;
+			return attributes.ToArray();
 		}
 	}
 }
