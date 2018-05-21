@@ -2,16 +2,18 @@
 {
 	public static class Module
 	{
-		public const byte INTERNAL = 0;
+		public const byte BATTLE = 0;
 	}
 
 	public static class Command
 	{
-		public const ushort BATTLE_CREATE = 32000;
-public const ushort BATTLE_DESTROY = 32001;
-public const ushort ENTITY_AWAKE = 32002;
-public const ushort ENTITY_START = 32003;
-public const ushort ENTITY_DESTROY = 32004;
-public const ushort TRANSFORM = 32005;
+		public const ushort SC_KEYFRAME = 0;
+public const ushort SC_CREATE = 1;
+public const ushort SC_DESTROY = 2;
+public const ushort SC_ENTITY_AWAKE = 3;
+public const ushort SC_ENTITY_START = 4;
+public const ushort SC_ENTITY_DESTROY = 5;
+public const ushort SC_TRANSFORM = 6;
+public const ushort SC_FRAME = 1000;
 	}
 }

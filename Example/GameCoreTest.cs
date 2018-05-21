@@ -1,6 +1,8 @@
-﻿using RC.Game.Core;
-using System.Threading;
+﻿using RC.Game;
 using RC.Game.Components;
+using RC.Game.Core;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Example
 {
@@ -8,13 +10,15 @@ namespace Example
 	{
 		public GameCoreTest()
 		{
-			Battle battle = new Battle();
+			Battle battle = new Battle( 20, 4 );
 			Entity entity = battle.entityManager.Create<Entity>();
 			Transform transform = entity.AddComponent<Transform>();
+			Stopwatch sw = new Stopwatch();
+			sw.Start();
 			while ( true )
 			{
-				battle.Update( 50 );
-				Thread.Sleep( 50 );
+				battle.Update( sw.ElapsedMilliseconds );
+				Thread.Sleep( 10 );
 			}
 		}
 	}

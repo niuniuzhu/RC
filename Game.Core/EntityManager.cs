@@ -10,9 +10,9 @@ namespace RC.Game.Core
 		private readonly List<Entity> _entities = new List<Entity>();
 		private readonly Dictionary<ulong, Entity> _idToEntity = new Dictionary<ulong, Entity>();
 
-		private Battle _battle;
+		private IBattle _battle;
 
-		public EntityManager( Battle battle )
+		public EntityManager( IBattle battle )
 		{
 			this._battle = battle;
 		}
@@ -63,7 +63,7 @@ namespace RC.Game.Core
 			}
 		}
 
-		internal void Update( UpdateContext context )
+		public void Update( UpdateContext context )
 		{
 			this.GenericUpdate( context );
 			//更新状态

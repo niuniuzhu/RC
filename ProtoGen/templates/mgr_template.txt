@@ -49,11 +49,11 @@ namespace [ns]
 		{
 			return new [packet_cls_name]( [fields ,][field_name][/fields] );
 		}[/get_packet1]
-		[get_packet2 \n]public static void [packet_call_name]( this INetTransmitter transmitter, [dto_cls_name] dto )
+		[get_packet2 \n]public static void [packet_call_name]( this INetClient transmitter, [dto_cls_name] dto )
 		{
 			transmitter.Send( new [packet_cls_name]( dto ) );
 		}[/get_packet2]
-		[get_packet3 \n]public static void [packet_call_name]( this INetTransmitter transmitter[option], [/option][fields ,][field_type] [field_name][/fields] )
+		[get_packet3 \n]public static void [packet_call_name]( this INetClient transmitter[option], [/option][fields ,][field_type] [field_name][/fields] )
 		{
 			transmitter.Send( new [packet_cls_name]( [fields ,][field_name][/fields] ) );
 		}[/get_packet3]

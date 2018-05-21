@@ -3,23 +3,23 @@ using RC.Net.Protocol;
 
 namespace RC.Game.Protocols
 {
-	[Packet( 0, 32004 )]
-	public class _PACKET_INTERNAL_ENTITY_DESTROY : Packet
+	[Packet( 0, 0 )]
+	public class _PACKET_BATTLE_SC_KEYFRAME : Packet
 	{
-		public _DTO_ulong dto;
+		public _DTO_keyframe dto;
 
-		public _PACKET_INTERNAL_ENTITY_DESTROY() : base( 0, 32004 )
+		public _PACKET_BATTLE_SC_KEYFRAME() : base( 0, 0 )
 		{
 		}
 
-		public _PACKET_INTERNAL_ENTITY_DESTROY( _DTO_ulong dto ) : base( 0, 32004 )
+		public _PACKET_BATTLE_SC_KEYFRAME( _DTO_keyframe dto ) : base( 0, 0 )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_INTERNAL_ENTITY_DESTROY( ulong value ) : base( 0, 32004 )
+		public _PACKET_BATTLE_SC_KEYFRAME( int frame ) : base( 0, 0 )
 		{
-			this.dto = new _DTO_ulong( value );
+			this.dto = new _DTO_keyframe( frame );
 		}
 
 		protected override void InternalSerialize( StreamBuffer buffer )
@@ -31,7 +31,7 @@ namespace RC.Game.Protocols
 		protected override void InternalDeserialize( StreamBuffer buffer )
 		{
 			base.InternalDeserialize( buffer );
-			this.dto = new _DTO_ulong();
+			this.dto = new _DTO_keyframe();
 			this.dto.Deserialize( buffer );
 		}
 

@@ -11,7 +11,7 @@ namespace RC.Game.Core
 		}
 
 		public ulong rid { get; internal set; }
-		public Battle battle { get; internal set; }
+		public IBattle battle { get; internal set; }
 		public bool destroied { get; private set; }
 		internal bool markToDestroy { get; private set; }
 

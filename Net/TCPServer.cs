@@ -51,6 +51,12 @@ namespace RC.Net
 			}
 		}
 
+		public void SendAll( Packet packet )
+		{
+			foreach ( TCPUserToken token in this._tokens )
+				token.Send( packet );
+		}
+
 		public void Dispose()
 		{
 			this.Stop();

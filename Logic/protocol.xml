@@ -35,7 +35,28 @@
 		<struct id="10" name="string">
 			<field id="value" type="string" name="值"/>
 		</struct>
-		<struct id="11" name="transform">
+		<struct id="20" name="frame_info">
+			<field id="frameId" type="int"/>
+			<field id="actions" type="alist" struct="action_info"/>
+		</struct>
+		<struct id="21" name="action_info">
+			<field id="type" type="byte"/>
+			<field id="sender" type="string"/>
+			<conditions>
+				<condition key="type" value="0">
+					<field id="x" type="float" name="x"/>
+					<field id="y" type="float" name="y"/>
+					<field id="z" type="float" name="z"/>
+				</condition>
+				<condition key="type" value="1">
+					<field id="target" type="string"/>
+				</condition>
+			</conditions>
+		</struct>
+		<struct id="22" name="keyframe">
+			<field id="frame" type="int"/>
+		</struct>
+		<struct id="30" name="transform">
 			<field id="position_x" type="float"/>
 			<field id="position_y" type="float"/>
 			<field id="position_z" type="float"/>
@@ -45,13 +66,15 @@
 		</struct>
 	</structs>
 	<modules>
-		<module id="0" key="INTERNAL">
-			<packet cmd="32000" key="BATTLE_CREATE"/>
-			<packet cmd="32001" key="BATTLE_DESTROY"/>
-			<packet cmd="32002" struct="ulong" key="ENTITY_AWAKE"/>
-			<packet cmd="32003" struct="ulong" key="ENTITY_START"/>
-			<packet cmd="32004" struct="ulong" key="ENTITY_DESTROY"/>
-			<packet cmd="32005" struct="transform" key="TRANSFORM"/>
+		<module id="0" key="BATTLE">
+			<packet cmd="0" struct="keyframe" key="SC_KEYFRAME"/>
+			<packet cmd="1" key="SC_CREATE"/>
+			<packet cmd="2" key="SC_DESTROY"/>
+			<packet cmd="3" struct="ulong" key="SC_ENTITY_AWAKE"/>
+			<packet cmd="4" struct="ulong" key="SC_ENTITY_START"/>
+			<packet cmd="5" struct="ulong" key="SC_ENTITY_DESTROY"/>
+			<packet cmd="6" struct="transform" key="SC_TRANSFORM"/>
+			<packet cmd="1000" struct="frame_info" key="SC_FRAME"/><!--这是外部协议,如何区分?-->
 		</module>
 	</modules>
 </packet-defs>

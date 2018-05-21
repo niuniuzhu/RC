@@ -73,8 +73,6 @@ namespace RC.Game.Core
 
 		internal void Synchronize()
 		{
-			if ( this.owner.battle.transmitter == null )
-				return;
 			this.OnSynchronize();
 		}
 

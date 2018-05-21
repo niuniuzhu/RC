@@ -43,10 +43,11 @@ namespace RC.Game.Components
 
 		protected override void OnSynchronize()
 		{
-			_PACKET_INTERNAL_TRANSFORM packet = ProtocolManager.PACKET_INTERNAL_TRANSFORM(
-				( float )this.position.x, ( float )this.position.y, ( float )this.position.z,
-				( float )this.rotation.x, ( float )this.rotation.y, ( float )this.rotation.z );
-			this.owner.battle.transmitter.Send( packet );
+			this.owner.battle.transmitter.SendAll( ProtocolManager.PACKET_BATTLE_SC_TRANSFORM(
+													   ( float )this.position.x, ( float )this.position.y,
+													   ( float )this.position.z,
+													   ( float )this.rotation.x, ( float )this.rotation.y,
+													   ( float )this.rotation.z ) );
 		}
 	}
 }

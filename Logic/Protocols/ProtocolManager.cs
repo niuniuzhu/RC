@@ -22,17 +22,22 @@ namespace RC.Game.Protocols
 { 8, typeof( _DTO_ulong ) },
 { 9, typeof( _DTO_double ) },
 { 10, typeof( _DTO_string ) },
-{ 11, typeof( _DTO_transform ) },
+{ 20, typeof( _DTO_frame_info ) },
+{ 21, typeof( _DTO_action_info ) },
+{ 22, typeof( _DTO_keyframe ) },
+{ 30, typeof( _DTO_transform ) },
 		};
 
 		private static readonly Dictionary<int, Type> PACKET_MAP = new Dictionary<int, Type>
 		{
-			{ EncodeID( 0, 32000 ), typeof( _PACKET_INTERNAL_BATTLE_CREATE ) },
-{ EncodeID( 0, 32001 ), typeof( _PACKET_INTERNAL_BATTLE_DESTROY ) },
-{ EncodeID( 0, 32002 ), typeof( _PACKET_INTERNAL_ENTITY_AWAKE ) },
-{ EncodeID( 0, 32003 ), typeof( _PACKET_INTERNAL_ENTITY_START ) },
-{ EncodeID( 0, 32004 ), typeof( _PACKET_INTERNAL_ENTITY_DESTROY ) },
-{ EncodeID( 0, 32005 ), typeof( _PACKET_INTERNAL_TRANSFORM ) },
+			{ EncodeID( 0, 0 ), typeof( _PACKET_BATTLE_SC_KEYFRAME ) },
+{ EncodeID( 0, 1 ), typeof( _PACKET_BATTLE_SC_CREATE ) },
+{ EncodeID( 0, 2 ), typeof( _PACKET_BATTLE_SC_DESTROY ) },
+{ EncodeID( 0, 3 ), typeof( _PACKET_BATTLE_SC_ENTITY_AWAKE ) },
+{ EncodeID( 0, 4 ), typeof( _PACKET_BATTLE_SC_ENTITY_START ) },
+{ EncodeID( 0, 5 ), typeof( _PACKET_BATTLE_SC_ENTITY_DESTROY ) },
+{ EncodeID( 0, 6 ), typeof( _PACKET_BATTLE_SC_TRANSFORM ) },
+{ EncodeID( 0, 1000 ), typeof( _PACKET_BATTLE_SC_FRAME ) },
 		};
 		
 		public static Type GetDTOType( ushort dtoId )
@@ -140,6 +145,38 @@ public static _DTO_string DTO_string( string value )
 		{
 			return new _DTO_string( value );
 		}
+public static _DTO_frame_info DTO_frame_info(  )
+		{
+			return new _DTO_frame_info(  );
+		}
+public static _DTO_frame_info DTO_frame_info( _DTO_action_info[] actions,int frameId )
+		{
+			return new _DTO_frame_info( actions,frameId );
+		}
+public static _DTO_action_info DTO_action_info(  )
+		{
+			return new _DTO_action_info(  );
+		}
+public static _DTO_action_info DTO_action_info( string sender,byte type,float x,float y,float z,string target )
+		{
+			return new _DTO_action_info( sender,type,x,y,z,target );
+		}
+public static _DTO_action_info DTO_action_info( string sender,byte type,float x,float y,float z )
+		{
+			return new _DTO_action_info( sender,type,x,y,z );
+		}
+public static _DTO_action_info DTO_action_info( string sender,byte type,string target )
+		{
+			return new _DTO_action_info( sender,type,target );
+		}
+public static _DTO_keyframe DTO_keyframe(  )
+		{
+			return new _DTO_keyframe(  );
+		}
+public static _DTO_keyframe DTO_keyframe( int frame )
+		{
+			return new _DTO_keyframe( frame );
+		}
 public static _DTO_transform DTO_transform(  )
 		{
 			return new _DTO_transform(  );
@@ -149,117 +186,165 @@ public static _DTO_transform DTO_transform( float position_x,float position_y,fl
 			return new _DTO_transform( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z );
 		}
 
-		public static _PACKET_INTERNAL_ENTITY_AWAKE PACKET_INTERNAL_ENTITY_AWAKE( _DTO_ulong dto )
+		public static _PACKET_BATTLE_SC_KEYFRAME PACKET_BATTLE_SC_KEYFRAME( _DTO_keyframe dto )
 		{
-			return new _PACKET_INTERNAL_ENTITY_AWAKE( dto );
+			return new _PACKET_BATTLE_SC_KEYFRAME( dto );
 		}
-public static _PACKET_INTERNAL_ENTITY_START PACKET_INTERNAL_ENTITY_START( _DTO_ulong dto )
+public static _PACKET_BATTLE_SC_ENTITY_AWAKE PACKET_BATTLE_SC_ENTITY_AWAKE( _DTO_ulong dto )
 		{
-			return new _PACKET_INTERNAL_ENTITY_START( dto );
+			return new _PACKET_BATTLE_SC_ENTITY_AWAKE( dto );
 		}
-public static _PACKET_INTERNAL_ENTITY_DESTROY PACKET_INTERNAL_ENTITY_DESTROY( _DTO_ulong dto )
+public static _PACKET_BATTLE_SC_ENTITY_START PACKET_BATTLE_SC_ENTITY_START( _DTO_ulong dto )
 		{
-			return new _PACKET_INTERNAL_ENTITY_DESTROY( dto );
+			return new _PACKET_BATTLE_SC_ENTITY_START( dto );
 		}
-public static _PACKET_INTERNAL_TRANSFORM PACKET_INTERNAL_TRANSFORM( _DTO_transform dto )
+public static _PACKET_BATTLE_SC_ENTITY_DESTROY PACKET_BATTLE_SC_ENTITY_DESTROY( _DTO_ulong dto )
 		{
-			return new _PACKET_INTERNAL_TRANSFORM( dto );
+			return new _PACKET_BATTLE_SC_ENTITY_DESTROY( dto );
 		}
-		public static _PACKET_INTERNAL_BATTLE_CREATE PACKET_INTERNAL_BATTLE_CREATE(  )
+public static _PACKET_BATTLE_SC_TRANSFORM PACKET_BATTLE_SC_TRANSFORM( _DTO_transform dto )
 		{
-			return new _PACKET_INTERNAL_BATTLE_CREATE(  );
+			return new _PACKET_BATTLE_SC_TRANSFORM( dto );
 		}
-public static _PACKET_INTERNAL_BATTLE_DESTROY PACKET_INTERNAL_BATTLE_DESTROY(  )
+public static _PACKET_BATTLE_SC_FRAME PACKET_BATTLE_SC_FRAME( _DTO_frame_info dto )
 		{
-			return new _PACKET_INTERNAL_BATTLE_DESTROY(  );
+			return new _PACKET_BATTLE_SC_FRAME( dto );
 		}
-public static _PACKET_INTERNAL_ENTITY_AWAKE PACKET_INTERNAL_ENTITY_AWAKE(  )
+		public static _PACKET_BATTLE_SC_KEYFRAME PACKET_BATTLE_SC_KEYFRAME(  )
 		{
-			return new _PACKET_INTERNAL_ENTITY_AWAKE(  );
+			return new _PACKET_BATTLE_SC_KEYFRAME(  );
 		}
-public static _PACKET_INTERNAL_ENTITY_AWAKE PACKET_INTERNAL_ENTITY_AWAKE( ulong value )
+public static _PACKET_BATTLE_SC_KEYFRAME PACKET_BATTLE_SC_KEYFRAME( int frame )
 		{
-			return new _PACKET_INTERNAL_ENTITY_AWAKE( value );
+			return new _PACKET_BATTLE_SC_KEYFRAME( frame );
 		}
-public static _PACKET_INTERNAL_ENTITY_START PACKET_INTERNAL_ENTITY_START(  )
+public static _PACKET_BATTLE_SC_CREATE PACKET_BATTLE_SC_CREATE(  )
 		{
-			return new _PACKET_INTERNAL_ENTITY_START(  );
+			return new _PACKET_BATTLE_SC_CREATE(  );
 		}
-public static _PACKET_INTERNAL_ENTITY_START PACKET_INTERNAL_ENTITY_START( ulong value )
+public static _PACKET_BATTLE_SC_DESTROY PACKET_BATTLE_SC_DESTROY(  )
 		{
-			return new _PACKET_INTERNAL_ENTITY_START( value );
+			return new _PACKET_BATTLE_SC_DESTROY(  );
 		}
-public static _PACKET_INTERNAL_ENTITY_DESTROY PACKET_INTERNAL_ENTITY_DESTROY(  )
+public static _PACKET_BATTLE_SC_ENTITY_AWAKE PACKET_BATTLE_SC_ENTITY_AWAKE(  )
 		{
-			return new _PACKET_INTERNAL_ENTITY_DESTROY(  );
+			return new _PACKET_BATTLE_SC_ENTITY_AWAKE(  );
 		}
-public static _PACKET_INTERNAL_ENTITY_DESTROY PACKET_INTERNAL_ENTITY_DESTROY( ulong value )
+public static _PACKET_BATTLE_SC_ENTITY_AWAKE PACKET_BATTLE_SC_ENTITY_AWAKE( ulong value )
 		{
-			return new _PACKET_INTERNAL_ENTITY_DESTROY( value );
+			return new _PACKET_BATTLE_SC_ENTITY_AWAKE( value );
 		}
-public static _PACKET_INTERNAL_TRANSFORM PACKET_INTERNAL_TRANSFORM(  )
+public static _PACKET_BATTLE_SC_ENTITY_START PACKET_BATTLE_SC_ENTITY_START(  )
 		{
-			return new _PACKET_INTERNAL_TRANSFORM(  );
+			return new _PACKET_BATTLE_SC_ENTITY_START(  );
 		}
-public static _PACKET_INTERNAL_TRANSFORM PACKET_INTERNAL_TRANSFORM( float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z )
+public static _PACKET_BATTLE_SC_ENTITY_START PACKET_BATTLE_SC_ENTITY_START( ulong value )
 		{
-			return new _PACKET_INTERNAL_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z );
+			return new _PACKET_BATTLE_SC_ENTITY_START( value );
 		}
-		public static void CALL_INTERNAL_ENTITY_AWAKE( this INetTransmitter transmitter, _DTO_ulong dto )
+public static _PACKET_BATTLE_SC_ENTITY_DESTROY PACKET_BATTLE_SC_ENTITY_DESTROY(  )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_AWAKE( dto ) );
+			return new _PACKET_BATTLE_SC_ENTITY_DESTROY(  );
 		}
-public static void CALL_INTERNAL_ENTITY_START( this INetTransmitter transmitter, _DTO_ulong dto )
+public static _PACKET_BATTLE_SC_ENTITY_DESTROY PACKET_BATTLE_SC_ENTITY_DESTROY( ulong value )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_START( dto ) );
+			return new _PACKET_BATTLE_SC_ENTITY_DESTROY( value );
 		}
-public static void CALL_INTERNAL_ENTITY_DESTROY( this INetTransmitter transmitter, _DTO_ulong dto )
+public static _PACKET_BATTLE_SC_TRANSFORM PACKET_BATTLE_SC_TRANSFORM(  )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_DESTROY( dto ) );
+			return new _PACKET_BATTLE_SC_TRANSFORM(  );
 		}
-public static void CALL_INTERNAL_TRANSFORM( this INetTransmitter transmitter, _DTO_transform dto )
+public static _PACKET_BATTLE_SC_TRANSFORM PACKET_BATTLE_SC_TRANSFORM( float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_TRANSFORM( dto ) );
+			return new _PACKET_BATTLE_SC_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z );
 		}
-		public static void CALL_INTERNAL_BATTLE_CREATE( this INetTransmitter transmitter )
+public static _PACKET_BATTLE_SC_FRAME PACKET_BATTLE_SC_FRAME(  )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_BATTLE_CREATE(  ) );
+			return new _PACKET_BATTLE_SC_FRAME(  );
 		}
-public static void CALL_INTERNAL_BATTLE_DESTROY( this INetTransmitter transmitter )
+public static _PACKET_BATTLE_SC_FRAME PACKET_BATTLE_SC_FRAME( _DTO_action_info[] actions,int frameId )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_BATTLE_DESTROY(  ) );
+			return new _PACKET_BATTLE_SC_FRAME( actions,frameId );
 		}
-public static void CALL_INTERNAL_ENTITY_AWAKE( this INetTransmitter transmitter )
+		public static void CALL_BATTLE_SC_KEYFRAME( this INetClient transmitter, _DTO_keyframe dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_AWAKE(  ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_KEYFRAME( dto ) );
 		}
-public static void CALL_INTERNAL_ENTITY_AWAKE( this INetTransmitter transmitter, ulong value )
+public static void CALL_BATTLE_SC_ENTITY_AWAKE( this INetClient transmitter, _DTO_ulong dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_AWAKE( value ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_AWAKE( dto ) );
 		}
-public static void CALL_INTERNAL_ENTITY_START( this INetTransmitter transmitter )
+public static void CALL_BATTLE_SC_ENTITY_START( this INetClient transmitter, _DTO_ulong dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_START(  ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_START( dto ) );
 		}
-public static void CALL_INTERNAL_ENTITY_START( this INetTransmitter transmitter, ulong value )
+public static void CALL_BATTLE_SC_ENTITY_DESTROY( this INetClient transmitter, _DTO_ulong dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_START( value ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_DESTROY( dto ) );
 		}
-public static void CALL_INTERNAL_ENTITY_DESTROY( this INetTransmitter transmitter )
+public static void CALL_BATTLE_SC_TRANSFORM( this INetClient transmitter, _DTO_transform dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_DESTROY(  ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_TRANSFORM( dto ) );
 		}
-public static void CALL_INTERNAL_ENTITY_DESTROY( this INetTransmitter transmitter, ulong value )
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_frame_info dto )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_ENTITY_DESTROY( value ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( dto ) );
 		}
-public static void CALL_INTERNAL_TRANSFORM( this INetTransmitter transmitter )
+		public static void CALL_BATTLE_SC_KEYFRAME( this INetClient transmitter )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_TRANSFORM(  ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_KEYFRAME(  ) );
 		}
-public static void CALL_INTERNAL_TRANSFORM( this INetTransmitter transmitter, float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z )
+public static void CALL_BATTLE_SC_KEYFRAME( this INetClient transmitter, int frame )
 		{
-			transmitter.Send( new _PACKET_INTERNAL_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_KEYFRAME( frame ) );
+		}
+public static void CALL_BATTLE_SC_CREATE( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_CREATE(  ) );
+		}
+public static void CALL_BATTLE_SC_DESTROY( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_DESTROY(  ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_AWAKE( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_AWAKE(  ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_AWAKE( this INetClient transmitter, ulong value )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_AWAKE( value ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_START( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_START(  ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_START( this INetClient transmitter, ulong value )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_START( value ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_DESTROY( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_DESTROY(  ) );
+		}
+public static void CALL_BATTLE_SC_ENTITY_DESTROY( this INetClient transmitter, ulong value )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_ENTITY_DESTROY( value ) );
+		}
+public static void CALL_BATTLE_SC_TRANSFORM( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_TRANSFORM(  ) );
+		}
+public static void CALL_BATTLE_SC_TRANSFORM( this INetClient transmitter, float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z ) );
+		}
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME(  ) );
+		}
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_action_info[] actions,int frameId )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( actions,frameId ) );
 		}
 	}
 }
