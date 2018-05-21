@@ -1530,7 +1530,7 @@
           "bin/placeholder/Core.dll": {}
         }
       },
-      "Game/1.0.0": {
+      "Game.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
@@ -1538,10 +1538,25 @@
           "Net": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/Game.dll": {}
+          "bin/placeholder/Game.Core.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Game.dll": {}
+          "bin/placeholder/Game.Core.dll": {}
+        }
+      },
+      "Logic/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Core": "1.0.0",
+          "Game.Core": "1.0.0",
+          "Net": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Logic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Logic.dll": {}
         }
       },
       "Net/1.0.0": {
@@ -5312,10 +5327,15 @@
       "path": "../Core/Core.csproj",
       "msbuildProject": "../Core/Core.csproj"
     },
-    "Game/1.0.0": {
+    "Game.Core/1.0.0": {
       "type": "project",
-      "path": "../Game/Game.csproj",
-      "msbuildProject": "../Game/Game.csproj"
+      "path": "../Game.Core/Game.Core.csproj",
+      "msbuildProject": "../Game.Core/Game.Core.csproj"
+    },
+    "Logic/1.0.0": {
+      "type": "project",
+      "path": "../Logic/Logic.csproj",
+      "msbuildProject": "../Logic/Logic.csproj"
     },
     "Net/1.0.0": {
       "type": "project",
@@ -5326,7 +5346,8 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Core >= 1.0.0",
-      "Game >= 1.0.0",
+      "Game.Core >= 1.0.0",
+      "Logic >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0",
       "Net >= 1.0.0",
       "log4net >= 2.0.8"
@@ -5366,8 +5387,11 @@
             "D:\\Projects\\RC\\Core\\Core.csproj": {
               "projectPath": "D:\\Projects\\RC\\Core\\Core.csproj"
             },
-            "D:\\Projects\\RC\\Game\\Game.csproj": {
-              "projectPath": "D:\\Projects\\RC\\Game\\Game.csproj"
+            "D:\\Projects\\RC\\Game.Core\\Game.Core.csproj": {
+              "projectPath": "D:\\Projects\\RC\\Game.Core\\Game.Core.csproj"
+            },
+            "D:\\Projects\\RC\\Logic\\Logic.csproj": {
+              "projectPath": "D:\\Projects\\RC\\Logic\\Logic.csproj"
             },
             "D:\\Projects\\RC\\Net\\Net.csproj": {
               "projectPath": "D:\\Projects\\RC\\Net\\Net.csproj"

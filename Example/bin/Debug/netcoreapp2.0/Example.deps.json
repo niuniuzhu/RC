@@ -9,7 +9,7 @@
       "Example/1.0.0": {
         "dependencies": {
           "Core": "1.0.0",
-          "Game": "1.0.0",
+          "Game.Core": "1.0.0",
           "Net": "1.0.0",
           "log4net": "2.0.8"
         },
@@ -928,13 +928,13 @@
           "Core.dll": {}
         }
       },
-      "Game/1.0.0": {
+      "Game.Core/1.0.0": {
         "dependencies": {
           "Core": "1.0.0",
           "Net": "1.0.0"
         },
         "runtime": {
-          "Game.dll": {}
+          "Game.Core.dll": {}
         }
       },
       "Net/1.0.0": {
@@ -1455,7 +1455,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Game/1.0.0": {
+    "Game.Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

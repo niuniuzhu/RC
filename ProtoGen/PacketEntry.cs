@@ -34,7 +34,7 @@ namespace RC.ProtoGen
 			return $"_PACKET_{this.module.key}_{this.key}";
 		}
 
-		public void Gen( string outputPath )
+		public void Gen( string outputPath, string ns )
 		{
 			string output = Interpreter.PACKET_TEMPLATE;
 			MatchCollection collection = Interpreter.REGEX_OPTION.Matches( output );
@@ -53,6 +53,7 @@ namespace RC.ProtoGen
 			output = output.Replace( "[cls_name]", this.ClsName() );
 			output = output.Replace( "[module]", this.module.id );
 			output = output.Replace( "[cmd]", this.id );
+			output = output.Replace( "[ns]", ns );
 
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
 		}

@@ -151,27 +151,28 @@ namespace RC.ProtoGen
 			return null;
 		}
 
-		public void Gen( string outputPath )
+		public void Gen( string outputPath, string ns )
 		{
 			foreach ( DTOEntry dto in this._dtos )
-				dto.Gen( outputPath );
+				dto.Gen( outputPath, ns );
 
 			foreach ( ModuleEntry module in this._modules )
 				foreach ( PacketEntry packet in module.packets )
-					packet.Gen( outputPath );
+					packet.Gen( outputPath, ns );
 
-			this.GenManager( outputPath );
-			this.GenConst( outputPath );
+			this.GenManager( outputPath, ns );
+			this.GenConst( outputPath, ns );
 		}
 
-		private void GenManager( string outputPath )
+		private void GenManager( string outputPath, string ns )
 		{
-			string template = this.ProcessDTOs( MGR_TEMPLATE );
-			template = this.ProcessPackets( template );
-			template = this.ProcessDTOFuncs( template );
-			template = this.ProcessPacketFuncs( template );
+			string output = this.ProcessDTOs( MGR_TEMPLATE );
+			output = this.ProcessPackets( output );
+			output = this.ProcessDTOFuncs( output );
+			output = this.ProcessPacketFuncs( output );
+			output = output.Replace( "[ns]", ns );
 
-			File.WriteAllText( Path.Combine( outputPath, "ProtocolManager.cs" ), template, Encoding.UTF8 );
+			File.WriteAllText( Path.Combine( outputPath, "ProtocolManager.cs" ), output, Encoding.UTF8 );
 		}
 
 		private string ProcessDTOs( string input )
@@ -463,7 +464,7 @@ namespace RC.ProtoGen
 			return input;
 		}
 
-		private void GenConst( string outputPath )
+		private void GenConst( string outputPath, string ns )
 		{
 			string input = Resources.const_template;
 			StringBuilder sb = new StringBuilder();
@@ -506,6 +507,7 @@ namespace RC.ProtoGen
 				}
 			}
 			input = input.Replace( match.Value, sb.ToString() );
+			input = input.Replace( "[ns]", ns );
 
 			File.WriteAllText( Path.Combine( outputPath, "ProtocolConsts.cs" ), input, Encoding.UTF8 );
 		}

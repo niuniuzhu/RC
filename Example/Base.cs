@@ -3,9 +3,9 @@ using Example.Properties;
 
 namespace Example
 {
-	public class Base
+	public abstract class Base
 	{
-		public Base()
+		protected Base()
 		{
 			AssemblyName[] assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies();
 			foreach ( AssemblyName assembly in assemblies )

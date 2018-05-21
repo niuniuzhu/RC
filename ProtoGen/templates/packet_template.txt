@@ -1,7 +1,7 @@
 using RC.Net;
 using RC.Net.Protocol;
 
-namespace Protocol.Gen
+namespace [ns]
 {
 	[Packet( [module], [cmd] )]
 	public class [cls_name] : Packet

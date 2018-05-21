@@ -72,12 +72,13 @@ namespace RC.ProtoGen
 			return $"_DTO_{this.name}";
 		}
 
-		public void Gen( string outputPath )
+		public void Gen( string outputPath, string ns )
 		{
 			string output = this.ProcessCtors( Interpreter.DTO_TEMPLATE );
 			output = this.ProcessSerialize( output );
 			output = this.ProcessFields( output, this.allFields );
 			output = output.Replace( "[cls_name]", this.ClsName() );
+			output = output.Replace( "[ns]", ns );
 
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
 		}

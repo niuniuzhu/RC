@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RC.Net;
 using RC.Net.Protocol;
 
-namespace Protocol.Gen
+namespace [ns]
 {
 	public class [cls_name] : DTO
 	{

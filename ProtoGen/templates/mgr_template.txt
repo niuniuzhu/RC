@@ -5,7 +5,7 @@ using RC.Net.Protocol;
 using System;
 using System.Collections.Generic;
 
-namespace Protocol.Gen
+namespace [ns]
 {
 	public static class ProtocolManager
 	{

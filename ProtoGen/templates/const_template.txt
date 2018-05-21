@@ -1,4 +1,4 @@
-namespace Protocol.Gen
+namespace [ns]
 {
 	public static class Module
 	{
