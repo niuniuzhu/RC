@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtoGen", "ProtoGen\ProtoG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "Game\Game.csproj", "{AC6BBE00-3C01-4F55-B9F6-30EC11D67421}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Generic", "Generic", "{DB19DE1A-D37B-4871-9ECB-EF42071A826C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,11 +75,25 @@ Global
 		{AC6BBE00-3C01-4F55-B9F6-30EC11D67421}.Release|x64.Build.0 = Release|Any CPU
 		{AC6BBE00-3C01-4F55-B9F6-30EC11D67421}.Release|x86.ActiveCfg = Release|Any CPU
 		{AC6BBE00-3C01-4F55-B9F6-30EC11D67421}.Release|x86.Build.0 = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|x64.Build.0 = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Debug|x86.Build.0 = Debug|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|x64.ActiveCfg = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|x64.Build.0 = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BE2AFC2-CE2B-4E87-960B-40336BFBAA3B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{D3A54D80-F05E-4ECC-B166-DF1051A08B1A} = {DB19DE1A-D37B-4871-9ECB-EF42071A826C}
+		{B3C8B740-E902-4F42-B876-1F9F1207E0D5} = {DB19DE1A-D37B-4871-9ECB-EF42071A826C}
 		{447E291D-7666-4AA3-A07B-9177481732B3} = {8AD5AA65-8EDB-4386-A288-E4EF8C8BBB16}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

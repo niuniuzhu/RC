@@ -1,33 +1,29 @@
-﻿using RC.Core.FMath;
-using RC.Net;
+﻿using RC.Net;
 
 namespace RC.Game
 {
 	public sealed class Battle
 	{
 		public int frame { get; private set; }
-		public Fix64 deltaTime { get; private set; }
-		public Fix64 time { get; private set; }
-
-		public INetTransmitter transmitter { get; set; }
+		public long deltaTime { get; private set; }
+		public long time { get; private set; }
+		public EntityManager entityManager { get; }
+		public INetClient transmitter { get; set; }
 
 		private readonly UpdateContext _context;
-		private readonly EntityManager _entityManager;
-
-		public EntityManager entityManager => this._entityManager;
 
 		public Battle()
 		{
 			this._context = new UpdateContext();
-			this._entityManager = new EntityManager( this );
+			this.entityManager = new EntityManager( this );
 		}
 
 		public void Dispose()
 		{
-			this._entityManager.Dispose();
+			this.entityManager.Dispose();
 		}
 
-		public void Update( Fix64 dt )
+		public void Update( long dt )
 		{
 			++this.frame;
 
@@ -38,7 +34,8 @@ namespace RC.Game
 			this._context.time = this.time;
 			this._context.frame = this.frame;
 
-			this._entityManager.Update( this._context );
+			this.entityManager.Update( this._context );
+			this.transmitter?.Update( this.deltaTime );
 		}
 	}
 }

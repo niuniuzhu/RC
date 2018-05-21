@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Protocol.Gen;
 
 namespace RC.Game
 {
@@ -76,7 +75,8 @@ namespace RC.Game
 
 		internal void Update( UpdateContext context )
 		{
-			this.OnUpdate( context );
+			if ( this._enabled )
+				this.OnUpdate( context );
 		}
 
 		internal void Synchronize()

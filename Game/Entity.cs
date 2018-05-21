@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RC.Game
 {
-	public abstract class Entity : IEnumerable<Component>
+	public class Entity : IEnumerable<Component>
 	{
 		public static void Destroy( Entity entity )
 		{
@@ -17,7 +17,7 @@ namespace RC.Game
 
 		private readonly ComponentManager _componentManager;
 
-		protected Entity()
+		public Entity()
 		{
 			this._componentManager = new ComponentManager( this );
 		}
