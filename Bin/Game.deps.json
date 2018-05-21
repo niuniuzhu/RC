@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v2.0": {
       "Game/1.0.0": {
         "dependencies": {
-          "Core": "1.0.0"
+          "Core": "1.0.0",
+          "Net": "1.0.0"
         },
         "runtime": {
           "Game.dll": {}
@@ -40,6 +41,14 @@
         "runtime": {
           "Core.dll": {}
         }
+      },
+      "Net/1.0.0": {
+        "dependencies": {
+          "Core": "1.0.0"
+        },
+        "runtime": {
+          "Net.dll": {}
+        }
       }
     }
   },
@@ -64,6 +73,11 @@
       "hashPath": "system.text.encoding.codepages.4.4.0.nupkg.sha512"
     },
     "Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Net/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

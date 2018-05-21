@@ -1,7 +1,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable InconsistentNaming
-using RC.Core.Net;
-using RC.Core.Net.Protocol;
+using RC.Net;
+using RC.Net.Protocol;
 using System;
 using System.Collections.Generic;
 

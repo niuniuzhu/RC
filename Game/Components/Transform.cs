@@ -1,4 +1,5 @@
-﻿using RC.Core.FMath;
+﻿using Protocol.Gen;
+using RC.Core.FMath;
 
 namespace RC.Game.Components
 {
@@ -33,13 +34,20 @@ namespace RC.Game.Components
 			}
 		}
 
-
 		private void OnPositionChanged()
 		{
 		}
 
 		private void OnRotationChanged()
 		{
+		}
+
+		protected override void OnSynchronize()
+		{
+			_PACKET_INTERNAL_TRANSFORM packet = ProtocolManager.PACKET_INTERNAL_TRANSFORM(
+				( float )this.position.x, ( float )this.position.y, ( float )this.position.z,
+				( float )this.rotation.x, ( float )this.rotation.y, ( float )this.rotation.z );
+			this.owner.battle.transmitter.Send( packet );
 		}
 	}
 }

@@ -239,6 +239,19 @@
         "runtime": {
           "bin/placeholder/Core.dll": {}
         }
+      },
+      "Net/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Net.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Net.dll": {}
+        }
       }
     }
   },
@@ -763,12 +776,18 @@
       "type": "project",
       "path": "../Core/Core.csproj",
       "msbuildProject": "../Core/Core.csproj"
+    },
+    "Net/1.0.0": {
+      "type": "project",
+      "path": "../Net/Net.csproj",
+      "msbuildProject": "../Net/Net.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Core >= 1.0.0",
-      "Microsoft.NETCore.App >= 2.0.0"
+      "Microsoft.NETCore.App >= 2.0.0",
+      "Net >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -804,6 +823,9 @@
           "projectReferences": {
             "D:\\Projects\\RC\\Core\\Core.csproj": {
               "projectPath": "D:\\Projects\\RC\\Core\\Core.csproj"
+            },
+            "D:\\Projects\\RC\\Net\\Net.csproj": {
+              "projectPath": "D:\\Projects\\RC\\Net\\Net.csproj"
             }
           }
         }

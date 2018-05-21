@@ -9,7 +9,10 @@
 //------------------------------------------------------------------------------
 
 namespace RC.ProtoGen.Properties {
-	/// <summary>
+    using System;
+    
+    
+    /// <summary>
     ///   一个强类型的资源类，用于查找本地化的字符串等。
     /// </summary>
     // 此类是由 StronglyTypedResourceBuilder
@@ -36,7 +39,7 @@ namespace RC.ProtoGen.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ProtocolGenerator.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RC.ProtoGen.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,12 +65,12 @@ namespace RC.ProtoGen.Properties {
         ///{
         ///	public static class Module
         ///	{
-        ///		[modules]
+        ///		[modules \n]public const byte [key] = [id];[/modules]
         ///	}
         ///
         ///	public static class Command
         ///	{
-        ///		[packets]
+        ///		[packets \n]public const ushort [key] = [id];[/packets]
         ///	}
         ///} 的本地化字符串。
         /// </summary>
@@ -132,7 +135,8 @@ namespace RC.ProtoGen.Properties {
         ///		{
         ///			base.InternalSerialize( buffer );
         ///
-        ///			[condition \n]if ( [key] == [value] [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			[serialize \n]
+        ///			if ( [cond [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string dto_template {
             get {
@@ -159,7 +163,7 @@ namespace RC.ProtoGen.Properties {
         ///
         ///		private static readonly Dictionary&lt;int, Type&gt; PACKET_MAP = new Dictionary&lt;int, Type&gt;
         ///		{
-        ///			[packets  [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			[pa [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string mgr_template {
             get {
@@ -173,6 +177,7 @@ namespace RC.ProtoGen.Properties {
         ///
         ///namespace Protocol.Gen
         ///{
+        ///	[Packet( [module], [cmd] )]
         ///	public class [cls_name] : Packet
         ///	{
         ///		[option]public [dto_cls_name] dto;[/option]
@@ -188,8 +193,7 @@ namespace RC.ProtoGen.Properties {
         ///
         ///		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd] )
         ///		{
-        ///			this.dto = new [dto_cls_name]( [fields ,][field_name][/fields] );
-        ///		 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			this.dto = new [dto_cls_name]( [f [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string packet_template {
             get {

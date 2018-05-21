@@ -10,6 +10,12 @@
 		<ProjectReference Include="..\Core\Core.csproj">
 			<Private>false</Private>
 		</ProjectReference>
+		<ProjectReference Include="..\Net\Net.csproj">
+		  <Private>false</Private>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Protocols\" />
 	</ItemGroup>
 
 </Project>

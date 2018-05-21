@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using RC.Core.Net;
-using RC.Core.Net.Protocol;
+using RC.Net;
+using RC.Net.Protocol;
 
 namespace Protocol.Gen
 {

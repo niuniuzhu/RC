@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ProtocolGenerator": {
+    "ProtoGen": {
       "commandName": "Project"
     }
   }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Protocol.Gen;
 
 namespace RC.Game
 {
@@ -31,6 +32,12 @@ namespace RC.Game
 		internal bool markToDestroy { get; private set; }
 
 		private bool _enabled;
+		private SynchronizeAttribute[] _synchronizeAttributes;
+
+		protected Component()
+		{
+			this._synchronizeAttributes = this.GetSyncAttributes();
+		}
 
 		internal void Awake()
 		{
@@ -74,6 +81,8 @@ namespace RC.Game
 
 		internal void Synchronize()
 		{
+			if ( this.owner.battle.transmitter == null )
+				return;
 			this.OnSynchronize();
 		}
 
@@ -97,10 +106,6 @@ namespace RC.Game
 		{
 		}
 
-		protected virtual void OnSynchronize()
-		{
-		}
-
 		protected virtual void OnNotifyComponentAdded( Component component )
 		{
 		}
@@ -109,7 +114,11 @@ namespace RC.Game
 		{
 		}
 
-		internal SynchronizeAttribute[] GetSyncProps()
+		protected virtual void OnSynchronize()
+		{
+		}
+
+		private SynchronizeAttribute[] GetSyncAttributes()
 		{
 			List<SynchronizeAttribute> attributes = new List<SynchronizeAttribute>();
 			Type type = this.GetType();
@@ -121,7 +130,7 @@ namespace RC.Game
 				SynchronizeAttribute attribute = propertyInfo.GetCustomAttribute<SynchronizeAttribute>( true );
 				if ( attribute == null )
 					continue;
-				attribute.owner = propertyInfo;
+				attribute.property = propertyInfo;
 				attributes.Add( attribute );
 			}
 			if ( attributes.Count == 0 )

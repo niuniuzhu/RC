@@ -1,4 +1,5 @@
 ﻿using RC.Core.FMath;
+using RC.Net;
 
 namespace RC.Game
 {
@@ -8,7 +9,7 @@ namespace RC.Game
 		public Fix64 deltaTime { get; private set; }
 		public Fix64 time { get; private set; }
 
-		public IDataTransmitter dataTransmitter { get; set; }
+		public INetTransmitter transmitter { get; set; }
 
 		private readonly UpdateContext _context;
 		private readonly EntityManager _entityManager;
