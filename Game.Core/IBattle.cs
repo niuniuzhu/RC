@@ -8,6 +8,6 @@ namespace RC.Game.Core
 		long deltaTime { get; }
 		long time { get; }
 		EntityManager entityManager { get; }
-		INetServer transmitter { get; set; }
+		INetServer transmitter { get; }
 	}
 }

@@ -1,11 +1,10 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Game.Core",
     "\\Logic",
-    "\\Net",
-    "\\ProtoGen\\Bin",
-    "\\ProtoGen\\Bin\\netcoreapp2.0"
+    "\\Net"
   ],
-  "SelectedNode": "\\Net\\Net.csproj",
+  "SelectedNode": "\\Game.Core\\Game.Core.csproj",
   "PreviewInSolutionExplorer": false
 }

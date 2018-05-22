@@ -1,8 +1,9 @@
 ﻿using RC.Game;
-using RC.Game.Components;
 using RC.Game.Core;
 using System.Diagnostics;
 using System.Threading;
+using RC.Game.Logic;
+using RC.Game.Logic.Components;
 
 namespace Example
 {

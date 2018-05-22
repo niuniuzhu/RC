@@ -1,10 +1,10 @@
 ﻿using RC.Core.Structure;
 using RC.Game.Core;
-using RC.Game.Protocols;
+using RC.Game.Protocol;
 using RC.Net;
 using RC.Net.Protocol;
 
-namespace RC.Game
+namespace RC.Game.Logic
 {
 	public sealed class Battle : IBattle
 	{
@@ -12,41 +12,26 @@ namespace RC.Game
 		public long deltaTime { get; private set; }
 		public long time { get; private set; }
 		public EntityManager entityManager { get; }
-
-		public INetServer transmitter
-		{
-			get => this._transmitter;
-			set
-			{
-				if ( this._transmitter == value )
-					return;
-				if ( this._packetDispatcher != null )
-				{
-					this.RemovePacketListeners();
-					this._packetDispatcher.Dispose();
-				}
-				this._transmitter = value;
-				this._packetDispatcher = new PacketDispatcher( this._transmitter );
-				this.AddPacketListeners();
-			}
-		}
+		public INetServer transmitter { get; }
+		public INetClient client { get; }
 
 		private readonly UpdateContext _context;
-		private INetServer _transmitter;
-		private PacketDispatcher _packetDispatcher;
-
 		private readonly int _msPerFrame;
 		private readonly int _framesPerKeyFrame;
 		private long _lastElapsed;
 		private int _nextKeyFrame;
 		private static readonly SwitchQueue<_DTO_frame_info> SERVER_KEYFRAMES = new SwitchQueue<_DTO_frame_info>();
 
-		public Battle( int frameRate, int framesPerKeyFrame )
+		public Battle( int frameRate, int framesPerKeyFrame, INetServer transmitter, INetClient client )
 		{
 			this._framesPerKeyFrame = framesPerKeyFrame;
 			this._msPerFrame = 1000 / frameRate;
 			this._lastElapsed = 0;
 			this._nextKeyFrame = this._framesPerKeyFrame;
+
+			this.transmitter = transmitter;
+			this.client = client;
+			this.client.OnSocketEvent += this.OnSocketEvent;
 
 			this._context = new UpdateContext();
 			this.entityManager = new EntityManager( this );
@@ -55,26 +40,19 @@ namespace RC.Game
 		public void Dispose()
 		{
 			this.entityManager.Dispose();
-			if ( this._packetDispatcher != null )
-			{
-				this.RemovePacketListeners();
-				this._packetDispatcher.Dispose();
-			}
-		}
-
-		private void AddPacketListeners()
-		{
-			this._packetDispatcher.AddListener( Module.BATTLE, Command.SC_FRAME, this.ProcessServerKeyFrame );
-		}
-
-		private void RemovePacketListeners()
-		{
-			this._packetDispatcher.RemoveListener( Module.BATTLE, Command.SC_FRAME, this.ProcessServerKeyFrame );
 		}
 
 		private void ProcessServerKeyFrame( Packet packet )
 		{
 			SERVER_KEYFRAMES.Push( ( ( _PACKET_BATTLE_SC_FRAME )packet ).dto );
+		}
+
+		private void OnSocketEvent( SocketEvent e )
+		{
+			if ( e.type != SocketEvent.Type.Receive )
+				return;
+			if ( e.packet.module == Module.BATTLE && e.packet.command == Command.SC_FRAME )
+				this.ProcessServerKeyFrame( e.packet );
 		}
 
 		public void Update( long dt )
@@ -110,7 +88,7 @@ namespace RC.Game
 
 					if ( this.frame == this._nextKeyFrame )
 					{
-						this.transmitter.SendAll( ProtocolManager.PACKET_BATTLE_SC_KEYFRAME( this.frame ) );
+						this.transmitter.SendAll( ProtocolManager.PACKET_LV_BATTLE_KEYFRAME( this.frame ) );
 					}
 
 					this._lastElapsed -= this._msPerFrame;

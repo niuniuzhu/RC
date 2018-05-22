@@ -10,7 +10,8 @@
         "dependencies": {
           "Core": "1.0.0",
           "Game.Core": "1.0.0",
-          "Net": "1.0.0"
+          "Net": "1.0.0",
+          "Protocol": "1.0.0"
         },
         "runtime": {
           "Logic.dll": {}
@@ -59,6 +60,14 @@
         "runtime": {
           "Net.dll": {}
         }
+      },
+      "Protocol/1.0.0": {
+        "dependencies": {
+          "Net": "1.0.0"
+        },
+        "runtime": {
+          "Protocol.dll": {}
+        }
       }
     }
   },
@@ -93,6 +102,11 @@
       "sha512": ""
     },
     "Net/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Protocol/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

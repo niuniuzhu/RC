@@ -8,24 +8,10 @@ namespace RC.Net
 	public class PacketDispatcher
 	{
 		private readonly PacketListener _listener = new PacketListener();
-		private readonly ISocketEventHolder _eventHolder;
 
-		public PacketDispatcher( ISocketEventHolder eventHolder )
+		public void Invoke( Packet packet )
 		{
-			this._eventHolder = eventHolder;
-			this._eventHolder.OnSocketEvent += this.OnSocketEvent;
-		}
-
-		public void Dispose()
-		{
-			this._eventHolder.OnSocketEvent -= this.OnSocketEvent;
-		}
-
-		private void OnSocketEvent( SocketEvent e )
-		{
-			if ( e.type != SocketEvent.Type.Receive )
-				return;
-			this._listener.Invoke( e.packet );
+			this._listener.Invoke( packet );
 		}
 
 		public void AddListener( byte module, ushort cmd, PacketHandler handler )

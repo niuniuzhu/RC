@@ -1,0 +1,10 @@
+D:\Projects\RC\Bin\Protocol.deps.json
+D:\Projects\RC\Bin\Protocol.dll
+D:\Projects\RC\Bin\Protocol.pdb
+D:\Projects\RC\Protocol\obj\Debug\Protocol.csprojAssemblyReference.cache
+D:\Projects\RC\Protocol\obj\Debug\Protocol.csproj.CoreCompileInputs.cache
+D:\Projects\RC\Protocol\obj\Debug\Protocol.AssemblyInfoInputs.cache
+D:\Projects\RC\Protocol\obj\Debug\Protocol.AssemblyInfo.cs
+D:\Projects\RC\Protocol\obj\Debug\Protocol.csproj.CopyComplete
+D:\Projects\RC\Protocol\obj\Debug\Protocol.dll
+D:\Projects\RC\Protocol\obj\Debug\Protocol.pdb

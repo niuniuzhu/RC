@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.0</TargetFramework>
-		<RootNamespace>RC.Game</RootNamespace>
+		<RootNamespace>RC.Game.Logic</RootNamespace>
 		<OutputPath>..\Bin\</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	</PropertyGroup>
@@ -17,10 +17,9 @@
 	  <ProjectReference Include="..\Net\Net.csproj">
 	    <Private>false</Private>
 	  </ProjectReference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Protocols\" />
+	  <ProjectReference Include="..\Protocol\Protocol.csproj">
+	    <Private>false</Private>
+	  </ProjectReference>
 	</ItemGroup>
 
 </Project>

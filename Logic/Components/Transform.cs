@@ -1,8 +1,8 @@
 ﻿using RC.Core.FMath;
 using RC.Game.Core;
-using RC.Game.Protocols;
+using RC.Game.Protocol;
 
-namespace RC.Game.Components
+namespace RC.Game.Logic.Components
 {
 	public class Transform : Component
 	{
@@ -43,7 +43,7 @@ namespace RC.Game.Components
 
 		protected override void OnSynchronize()
 		{
-			this.owner.battle.transmitter.SendAll( ProtocolManager.PACKET_BATTLE_SC_TRANSFORM(
+			this.owner.battle.transmitter.SendAll( ProtocolManager.PACKET_LV_BATTLE_TRANSFORM(
 													   ( float )this.position.x, ( float )this.position.y,
 													   ( float )this.position.z,
 													   ( float )this.rotation.x, ( float )this.rotation.y,
