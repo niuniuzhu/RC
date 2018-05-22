@@ -1,8 +1,8 @@
-﻿using RC.Core.Structure;
+﻿using RC.Core.Misc;
+using RC.Core.Structure;
 using RC.Game.Core;
 using RC.Game.Protocol;
 using RC.Net;
-using RC.Net.Protocol;
 
 namespace RC.Game.Logic
 {
@@ -13,7 +13,6 @@ namespace RC.Game.Logic
 		public long time { get; private set; }
 		public EntityManager entityManager { get; }
 		public INetServer transmitter { get; }
-		public INetClient client { get; }
 
 		private readonly UpdateContext _context;
 		private readonly int _msPerFrame;
@@ -22,7 +21,7 @@ namespace RC.Game.Logic
 		private int _nextKeyFrame;
 		private static readonly SwitchQueue<_DTO_frame_info> SERVER_KEYFRAMES = new SwitchQueue<_DTO_frame_info>();
 
-		public Battle( int frameRate, int framesPerKeyFrame, INetServer transmitter, INetClient client )
+		public Battle( int frameRate, int framesPerKeyFrame, INetServer transmitter )
 		{
 			this._framesPerKeyFrame = framesPerKeyFrame;
 			this._msPerFrame = 1000 / frameRate;
@@ -30,9 +29,6 @@ namespace RC.Game.Logic
 			this._nextKeyFrame = this._framesPerKeyFrame;
 
 			this.transmitter = transmitter;
-			this.client = client;
-			this.client.OnSocketEvent += this.OnSocketEvent;
-
 			this._context = new UpdateContext();
 			this.entityManager = new EntityManager( this );
 		}
@@ -42,17 +38,9 @@ namespace RC.Game.Logic
 			this.entityManager.Dispose();
 		}
 
-		private void ProcessServerKeyFrame( Packet packet )
+		public void ProcessServerKeyFrame( _DTO_frame_info dto )
 		{
-			SERVER_KEYFRAMES.Push( ( ( _PACKET_BATTLE_SC_FRAME )packet ).dto );
-		}
-
-		private void OnSocketEvent( SocketEvent e )
-		{
-			if ( e.type != SocketEvent.Type.Receive )
-				return;
-			if ( e.packet.module == Module.BATTLE && e.packet.command == Command.SC_FRAME )
-				this.ProcessServerKeyFrame( e.packet );
+			SERVER_KEYFRAMES.Push( dto );
 		}
 
 		public void Update( long dt )
@@ -68,7 +56,9 @@ namespace RC.Game.Logic
 					if ( length == 0 )
 						this.HandleAction( dto );
 					else
+					{
 						this.Simulate( this._msPerFrame );
+					}
 					--length;
 				}
 
@@ -87,9 +77,7 @@ namespace RC.Game.Logic
 					this.Simulate( this._msPerFrame );
 
 					if ( this.frame == this._nextKeyFrame )
-					{
 						this.transmitter.SendAll( ProtocolManager.PACKET_LV_BATTLE_KEYFRAME( this.frame ) );
-					}
 
 					this._lastElapsed -= this._msPerFrame;
 				}

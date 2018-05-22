@@ -18,3 +18,7 @@ D:\Projects\RC\Example\bin\Debug\netcoreapp2.0\Net.pdb
 D:\Projects\RC\Example\obj\Debug\netcoreapp2.0\Example.csproj.CopyComplete
 D:\Projects\RC\Example\obj\Debug\netcoreapp2.0\Example.dll
 D:\Projects\RC\Example\obj\Debug\netcoreapp2.0\Example.pdb
+D:\Projects\RC\Example\bin\Debug\netcoreapp2.0\Logic.dll
+D:\Projects\RC\Example\bin\Debug\netcoreapp2.0\Protocol.dll
+D:\Projects\RC\Example\bin\Debug\netcoreapp2.0\Logic.pdb
+D:\Projects\RC\Example\bin\Debug\netcoreapp2.0\Protocol.pdb

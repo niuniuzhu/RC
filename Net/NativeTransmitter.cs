@@ -1,16 +1,13 @@
 ﻿using RC.Core.Structure;
 using RC.Net.Protocol;
 using System.Collections.Generic;
+using RC.Core.Misc;
 
 namespace RC.Net
 {
 	public class NativeTransmitter : INetServer
 	{
-		public delegate void EventHandler( Packet e );
-
 		public event SocketEventHandler OnSocketEvent;
-
-		public ushort id { get; }
 
 		private readonly SwitchQueue<Packet> _pendingList = new SwitchQueue<Packet>();
 

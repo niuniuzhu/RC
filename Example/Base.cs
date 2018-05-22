@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Example.Misc;
 using Example.Properties;
 
 namespace Example
