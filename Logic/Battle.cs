@@ -106,6 +106,8 @@ namespace RC.Game.Logic
 
 			this.entityManager.Update( this._context );
 			this.transmitter.Update( this.deltaTime );
+
+			Logger.Log( this.frame );
 		}
 	}
 }
