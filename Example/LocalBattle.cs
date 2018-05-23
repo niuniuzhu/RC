@@ -1,5 +1,4 @@
-﻿using RC.Core.Misc;
-using RC.Game.Core;
+﻿using RC.Game.Core;
 using RC.Game.Logic;
 using RC.Game.Logic.Components;
 using RC.Game.Protocol;
@@ -20,7 +19,6 @@ namespace Example
 				NetworkManager.SetupKCP();
 			NetworkManager.CreateClient( NETWORK_NAME, protocolType );
 			NetworkManager.AddClientEventHandler( NETWORK_NAME, this.ProcessClientEvent );
-
 			NetworkManager.Connect( NETWORK_NAME, ip, port );
 		}
 
