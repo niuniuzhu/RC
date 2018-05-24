@@ -1,12 +1,12 @@
-﻿using RC.Core.Misc;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using RC.Core.Misc;
 using RC.Core.Structure;
 using RC.Game.Protocol;
 using RC.Net;
 using RC.Net.Protocol;
-using System.Collections.Generic;
-using System.Diagnostics;
 
-namespace Example
+namespace Example.lockstep
 {
 	public class StepLocker
 	{

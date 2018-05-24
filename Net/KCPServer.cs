@@ -17,13 +17,17 @@ namespace RC.Net
 		private SocketEvent? _closeEvent;
 		private readonly SwitchQueue<ReceivedData> _receivedDatas = new SwitchQueue<ReceivedData>();
 		private readonly NetworkUpdateContext _updateContext = new NetworkUpdateContext();
-		private readonly List<KCPUserToken> _tokens = new List<KCPUserToken>();
-		private readonly Dictionary<ushort, KCPUserToken> _idToTokens = new Dictionary<ushort, KCPUserToken>();
-		private readonly KCPUserTokenPool _userTokenPool = new KCPUserTokenPool();
+		private readonly UserTokenManager<KCPUserToken> _tokenManager = new UserTokenManager<KCPUserToken>();
 
 		internal KCPServer( int maxClient )
 		{
 			this._maxClient = maxClient;
+		}
+
+		public void Dispose()
+		{
+			this.Stop();
+			this._tokenManager.Dispose();
 		}
 
 		internal void SendTo( KCPUserToken token, byte[] data, int offset, int size, EndPoint endPoint )
@@ -36,7 +40,6 @@ namespace RC.Net
 			}
 			catch ( ObjectDisposedException )
 			{
-
 			}
 			catch ( SocketException e )
 			{
@@ -46,7 +49,8 @@ namespace RC.Net
 
 		public void Send( ushort tokenId, Packet packet )
 		{
-			if ( !this._idToTokens.TryGetValue( tokenId, out KCPUserToken token ) )
+			KCPUserToken token = this._tokenManager.Get( tokenId );
+			if ( token == null )
 			{
 				Logger.Warn( $"Usertoken {tokenId} not found" );
 				return;
@@ -60,7 +64,8 @@ namespace RC.Net
 			byte[] data = NetworkHelper.EncodePacket( packet );
 			foreach ( ushort tokenId in tokenIds )
 			{
-				if ( !this._idToTokens.TryGetValue( tokenId, out KCPUserToken token ) )
+				KCPUserToken token = this._tokenManager.Get( tokenId );
+				if ( token == null )
 				{
 					Logger.Warn( $"Usertoken {tokenId} not found" );
 					continue;
@@ -71,14 +76,8 @@ namespace RC.Net
 
 		public void SendAll( Packet packet )
 		{
-			foreach ( KCPUserToken token in this._tokens )
+			foreach ( KCPUserToken token in this._tokenManager )
 				token.Send( packet );
-		}
-
-		public void Dispose()
-		{
-			this.Stop();
-			this._userTokenPool.Dispose();
 		}
 
 		public void Stop()
@@ -92,16 +91,13 @@ namespace RC.Net
 				this._receivedDatas.Clear();
 			}
 
-			int count = this._tokens.Count;
-			for ( int i = 0; i < count; i++ )
+			while ( this._tokenManager.count > 0 )
 			{
-				KCPUserToken token = this._tokens[i];
+				KCPUserToken token = this._tokenManager[0];
 				this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Disconnect, "Server stoped", SocketError.Shutdown, token ) );
-				token.Close();
-				this._userTokenPool.Push( token );
+				token.OnDespawn();
+				this._tokenManager.Destroy( 0 );
 			}
-			this._tokens.Clear();
-			this._idToTokens.Clear();
 
 			socket.Shutdown( SocketShutdown.Both );
 			socket.Close();
@@ -212,25 +208,25 @@ namespace RC.Net
 
 		private void CheckClientOverRange()
 		{
-			int over = this._tokens.Count - this._maxClient;
+			int over = this._tokenManager.count - this._maxClient;
 			for ( int i = 0; i < over; i++ )
 			{
-				KCPUserToken token = this._tokens[this._tokens.Count - 1];
+				KCPUserToken token = this._tokenManager[this._tokenManager.count - 1];
 				token.MarkToDisconnect( "Client overrange", SocketError.SocketError );
 			}
 		}
 
 		private void UpdateClients()
 		{
-			int count = this._tokens.Count;
+			int count = this._tokenManager.count;
 			for ( int i = 0; i < count; i++ )
-				this._tokens[i].Update( this._updateContext );
+				this._tokenManager[i].Update( this._updateContext );
 		}
 
 		private void CheckClientAlive()
 		{
-			for ( int i = this._tokens.Count - 1; i >= 0; --i )
-				this._tokens[i].CheckAlive();
+			for ( int i = this._tokenManager.count - 1; i >= 0; --i )
+				this._tokenManager[i].CheckAlive();
 		}
 
 		private void ProcessReceiveDatas()
@@ -248,10 +244,8 @@ namespace RC.Net
 
 				if ( this.VerifyHandshake( data, ref offset, ref size ) )
 				{
-					KCPUserToken newToken = this._userTokenPool.Pop( this );
-					this._tokens.Add( newToken );
-					this._idToTokens.Add( newToken.id, newToken );
-					newToken.OnConnected( receivedData.remoteEndPoint, TimeUtils.utcTime );
+					KCPUserToken newToken = this._tokenManager.Create();
+					newToken.OnSpawn( this, receivedData.remoteEndPoint, TimeUtils.utcTime );
 					this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Accept,
 																 $"Client connection accepted, Remote Address: {receivedData.remoteEndPoint}",
 																 SocketError.Success, newToken ) );
@@ -270,12 +264,8 @@ namespace RC.Net
 					continue;
 				}
 
-				if ( !this._idToTokens.TryGetValue( peerId, out KCPUserToken token ) )
-				{
-					continue;
-				}
-
-				token.ProcessData( data, offset, size, packet =>
+				KCPUserToken token = this._tokenManager.Get( peerId );
+				token?.ProcessData( data, offset, size, packet =>
 				{
 					if ( packet.module == NetworkConfig.INTERNAL_MODULE && packet.command == 0 )
 						token.Send( new PacketHeartBeat( ( ( PacketHeartBeat )packet ).localTime ) );
@@ -295,17 +285,15 @@ namespace RC.Net
 			this.CheckClientAlive();
 			this.UpdateClients();
 
-			int count = this._tokens.Count;
+			int count = this._tokenManager.count;
 			for ( int i = 0; i < count; i++ )
 			{
-				KCPUserToken token = this._tokens[i];
+				KCPUserToken token = this._tokenManager[i];
 				if ( token.disconnectEvent == null )
 					continue;
 				this.OnSocketEvent?.Invoke( token.disconnectEvent.Value );
-				token.Close();
-				this._tokens.RemoveAt( i );
-				this._idToTokens.Remove( token.id );
-				this._userTokenPool.Push( token );
+				token.OnDespawn();
+				this._tokenManager.Destroy( i );
 				--i;
 				--count;
 			}

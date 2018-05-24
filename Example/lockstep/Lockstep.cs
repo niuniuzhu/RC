@@ -1,8 +1,7 @@
 ﻿using RC.Net;
-using System.Diagnostics;
 using System.Threading;
 
-namespace Example
+namespace Example.lockstep
 {
 	public class Lockstep : Base
 	{
@@ -15,24 +14,27 @@ namespace Example
 			Thread.Sleep( 100 );
 			this._localBattle = new LocalBattle( protocolType, ip, port );
 
-			Stopwatch sw = new Stopwatch();
-			sw.Start();
-			long realCost = 0;
-			long lastElapsed = 0;
-			while ( true )
-			{
-				this.Update( realCost );
-				Thread.Sleep( 1 );
-				long elapsed = sw.ElapsedMilliseconds;
-				realCost = elapsed - lastElapsed;
-				lastElapsed = elapsed;
-			}
+			this.StartLoopCycle( 1 );
 		}
 
-		public void Update( long deltaTime )
+		protected override void OnUpdate( long dt )
 		{
-			this._localBattle.Update( deltaTime );
-			NetworkManager.Update( deltaTime );
+			this._localBattle.Update( dt );
+			NetworkManager.Update( dt );
+		}
+
+		protected override void OnInput( string cmd )
+		{
+			switch( cmd )
+			{
+				case "cstop":
+					this._localBattle.Close();
+					break;
+
+				case "sstop":
+					this._remoteBattle.Stop();
+					break;
+			}
 		}
 	}
 }

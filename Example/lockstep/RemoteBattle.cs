@@ -1,11 +1,11 @@
-﻿using RC.Core.Misc;
-using RC.Net;
-using RC.Net.Protocol;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Threading;
+using RC.Core.Misc;
+using RC.Net;
+using RC.Net.Protocol;
 
-namespace Example
+namespace Example.lockstep
 {
 	public class RemoteBattle
 	{
@@ -16,13 +16,16 @@ namespace Example
 
 		public RemoteBattle( NetworkManager.PType protocolType, int port )
 		{
-			if ( protocolType == NetworkManager.PType.Kcp )
-				NetworkManager.SetupKCP();
 			NetworkManager.AddPacketTypes();
 			NetworkManager.CreateServer( NETWORK_NAME, protocolType, 10 );
 			NetworkManager.AddServerEventHandler( NETWORK_NAME, this.ProcessServerEvent );
 			NetworkManager.StartServer( NETWORK_NAME, port );
 			Logger.Log( $"Server started, listening port: {port}" );
+		}
+
+		public void Stop()
+		{
+			NetworkManager.StopServer( NETWORK_NAME );
 		}
 
 		private void ProcessServerEvent( SocketEvent e )

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RC.Core.Misc;
+using RC.Net.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using RC.Core.Misc;
-using RC.Net.Protocol;
 
 namespace RC.Net
 {
@@ -47,12 +47,9 @@ namespace RC.Net
 
 		private static readonly Dictionary<string, INetServer> SERVERS = new Dictionary<string, INetServer>();
 		private static readonly Dictionary<string, INetClient> CLIENTS = new Dictionary<string, INetClient>();
-		private static bool _involveKCP;
 
-		public static void SetupKCP()
+		static NetworkManager()
 		{
-			_involveKCP = true;
-
 			NetworkConfig.BUFFER_SIZE = 512;
 			NetworkConfig.KCP_NO_DELAY = 1;
 			NetworkConfig.KCP_INTERVAL = 20;
@@ -82,8 +79,7 @@ namespace RC.Net
 				kv.Value.Dispose();
 
 #if KCP_NATIVE
-			if ( _involveKCP )
-				Kcp.KCPInterface.ikcp_release_allocator();
+			Kcp.KCPInterface.ikcp_release_allocator();
 #endif
 		}
 
@@ -130,9 +126,7 @@ namespace RC.Net
 
 		private static INetServer GetServer( string name )
 		{
-			if ( !SERVERS.TryGetValue( name, out INetServer server ) )
-				return null;
-			return server;
+			return !SERVERS.TryGetValue( name, out INetServer server ) ? null : server;
 		}
 
 		public static void AddServerEventHandler( string serverName, SocketEventHandler socketEventHandler )
@@ -196,9 +190,7 @@ namespace RC.Net
 
 		private static INetClient GetClient( string name )
 		{
-			if ( !CLIENTS.TryGetValue( name, out INetClient client ) )
-				return null;
-			return client;
+			return !CLIENTS.TryGetValue( name, out INetClient client ) ? null : client;
 		}
 
 		public static void AddClientEventHandler( string clientName, SocketEventHandler socketEventHandler )

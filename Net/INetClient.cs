@@ -2,8 +2,9 @@
 
 namespace RC.Net
 {
-	public interface INetClient: ISocketEventHolder
+	public interface INetClient
 	{
+		event SocketEventHandler OnSocketEvent;
 		ushort id { get; }
 		void Dispose();
 		void Close();

@@ -4,7 +4,7 @@ using RC.Game.Logic.Components;
 using RC.Game.Protocol;
 using RC.Net;
 
-namespace Example
+namespace Example.lockstep
 {
 	public class LocalBattle
 	{
@@ -15,11 +15,14 @@ namespace Example
 
 		public LocalBattle( NetworkManager.PType protocolType, string ip, int port )
 		{
-			if ( protocolType == NetworkManager.PType.Kcp )
-				NetworkManager.SetupKCP();
 			NetworkManager.CreateClient( NETWORK_NAME, protocolType );
 			NetworkManager.AddClientEventHandler( NETWORK_NAME, this.ProcessClientEvent );
 			NetworkManager.Connect( NETWORK_NAME, ip, port );
+		}
+
+		public void Close()
+		{
+			NetworkManager.CloseClient( NETWORK_NAME );
 		}
 
 		private void ProcessClientEvent( SocketEvent e )

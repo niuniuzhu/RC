@@ -1,9 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using RC.Core.Misc;
+﻿using RC.Core.Misc;
 using RC.Net.Kcp;
 using RC.Net.Protocol;
+using System;
+using System.Net;
+using System.Net.Sockets;
 
 namespace RC.Net
 {
@@ -11,49 +11,49 @@ namespace RC.Net
 	{
 		public delegate void ProcessDataOutputHandler( Packet packet );
 
-		public ushort id { get; }
-		public SocketEvent? disconnectEvent => this._disconnectEvent;
+		public ushort id { get; private set; }
+		public SocketEvent? disconnectEvent { get; private set; }
 
-		private SocketEvent? _disconnectEvent;
 		private EndPoint _remoteEndPoint;
-		private readonly KCPServer _server;
+		private KCPServer _server;
 		private readonly KCPProxy _kcpProxy;
 		private bool _active;
 		private long _activeTime;
 
-		internal KCPUserToken( KCPServer server, ushort id )
+		internal KCPUserToken( ushort id )
 		{
 			this.id = id;
-			this._server = server;
 			this._kcpProxy = new KCPProxy( this.id, this.OnKCPOutout, ( log, user ) => /* Logger.Net( $"KCP log:{log}" )*/ { } );
 		}
 
-		internal void Dispose()
+		public void Dispose()
 		{
 			this._kcpProxy.Dispose();
 		}
 
-		internal void OnConnected( EndPoint remoteEndPoint, long connectTime )
+		public void OnSpawn( KCPServer server, EndPoint remoteEndPoint, long connectTime )
 		{
+			this._server = server;
 			this._active = true;
 			this._remoteEndPoint = remoteEndPoint;
 			this._activeTime = connectTime;
 		}
 
-		internal void MarkToDisconnect( string msg, SocketError errorCode )
-		{
-			if ( this._disconnectEvent != null )
-				return;
-			this._disconnectEvent = new SocketEvent( SocketEvent.Type.Disconnect, msg, errorCode, this );
-		}
-
-		internal void Close()
+		public void OnDespawn()
 		{
 			if ( !this._active )
 				return;
 			this._active = false;
-			this._disconnectEvent = null;
+			this.disconnectEvent = null;
 			this._kcpProxy.Clear();
+			this._server = null;
+		}
+
+		public void MarkToDisconnect( string msg, SocketError errorCode )
+		{
+			if ( this.disconnectEvent != null )
+				return;
+			this.disconnectEvent = new SocketEvent( SocketEvent.Type.Disconnect, msg, errorCode, this );
 		}
 
 		internal void ProcessData( byte[] data, int offset, int size, ProcessDataOutputHandler outputHandler )
@@ -105,14 +105,14 @@ namespace RC.Net
 			this._server.SendTo( this, data, offset, size, this._remoteEndPoint );
 		}
 
-		internal void CheckAlive()
+		public void CheckAlive()
 		{
 			if ( TimeUtils.utcTime < this._activeTime + NetworkConfig.PING_TIME_OUT )
 				return;
 			this.MarkToDisconnect( $"Heartbeat timeout, remote Address: {this._remoteEndPoint}", SocketError.TimedOut );
 		}
 
-		internal void Update( NetworkUpdateContext context )
+		public void Update( NetworkUpdateContext context )
 		{
 			this._kcpProxy.Update( context );
 		}

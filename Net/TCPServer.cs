@@ -15,20 +15,25 @@ namespace RC.Net
 		private readonly int _maxClient;
 		private Socket _socket;
 		private SocketEvent? _closeEvent;
-		private readonly List<TCPUserToken> _tokens = new List<TCPUserToken>();
-		private readonly Dictionary<ushort, TCPUserToken> _idToTokens = new Dictionary<ushort, TCPUserToken>();
 		private readonly SwitchQueue<ReceivedData> _receivedDatas = new SwitchQueue<ReceivedData>();
 		private readonly NetworkUpdateContext _updateContext = new NetworkUpdateContext();
-		private readonly TCPUserTokenPool _userTokenPool = new TCPUserTokenPool();
+		private readonly UserTokenManager<TCPUserToken> _tokenManager = new UserTokenManager<TCPUserToken>();
 
 		internal TCPServer( int maxClient )
 		{
 			this._maxClient = maxClient;
 		}
 
+		public void Dispose()
+		{
+			this.Stop();
+			this._tokenManager.Dispose();
+		}
+
 		public void Send( ushort tokenId, Packet packet )
 		{
-			if ( !this._idToTokens.TryGetValue( tokenId, out TCPUserToken token ) )
+			TCPUserToken token = this._tokenManager.Get( tokenId );
+			if ( token == null )
 			{
 				Logger.Warn( $"Usertoken {tokenId} not found" );
 				return;
@@ -42,7 +47,8 @@ namespace RC.Net
 			byte[] data = NetworkHelper.EncodePacket( packet );
 			foreach ( ushort tokenId in tokenIds )
 			{
-				if ( !this._idToTokens.TryGetValue( tokenId, out TCPUserToken token ) )
+				TCPUserToken token = this._tokenManager.Get( tokenId );
+				if ( token == null )
 				{
 					Logger.Warn( $"Usertoken {tokenId} not found" );
 					continue;
@@ -53,14 +59,8 @@ namespace RC.Net
 
 		public void SendAll( Packet packet )
 		{
-			foreach ( TCPUserToken token in this._tokens )
+			foreach ( TCPUserToken token in this._tokenManager )
 				token.Send( packet );
-		}
-
-		public void Dispose()
-		{
-			this.Stop();
-			this._userTokenPool.Dispose();
 		}
 
 		public void Stop()
@@ -73,16 +73,13 @@ namespace RC.Net
 				this._socket = null;
 				this._receivedDatas.Clear();
 
-				int count = this._tokens.Count;
-				for ( int i = 0; i < count; i++ )
+				while ( this._tokenManager.count > 0 )
 				{
-					TCPUserToken token = this._tokens[i];
+					TCPUserToken token = this._tokenManager[0];
 					this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Disconnect, "Server stoped", SocketError.Shutdown, token ) );
-					token.Close();
-					this._userTokenPool.Push( token );
+					token.OnDespawn();
+					this._tokenManager.Destroy( 0 );
 				}
-				this._tokens.Clear();
-				this._idToTokens.Clear();
 			}
 
 			if ( socket.Connected )
@@ -202,10 +199,10 @@ namespace RC.Net
 
 		private void CheckClientOverRange()
 		{
-			int over = this._tokens.Count - this._maxClient;
+			int over = this._tokenManager.count - this._maxClient;
 			for ( int i = 0; i < over; i++ )
 			{
-				TCPUserToken token = this._tokens[this._tokens.Count - 1];
+				TCPUserToken token = this._tokenManager[this._tokenManager.count - 1];
 				token.MarkToDisconnect( $"Client overrange, remote endpoint: {token.remoteEndPoint}",
 									SocketError.SocketError );
 			}
@@ -221,10 +218,8 @@ namespace RC.Net
 				{
 					case ReceivedData.Type.Accept:
 						{
-							TCPUserToken newToken = this._userTokenPool.Pop( this );
-							this._tokens.Add( newToken );
-							this._idToTokens.Add( newToken.id, newToken );
-							newToken.OnAccepted( receivedData.conn, TimeUtils.utcTime );
+							TCPUserToken newToken = this._tokenManager.Create();
+							newToken.OnSpawn( this, receivedData.conn, TimeUtils.utcTime );
 							this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Accept,
 																		 $"Client connection accepted, remote endpoint: {receivedData.conn.RemoteEndPoint}",
 																		 SocketError.Success, newToken ) );
@@ -257,17 +252,15 @@ namespace RC.Net
 			this.ProcessReceiveDatas();
 			this.CheckClientOverRange();
 
-			int count = this._tokens.Count;
+			int count = this._tokenManager.count;
 			for ( int i = 0; i < count; i++ )
 			{
-				TCPUserToken token = this._tokens[i];
+				TCPUserToken token = this._tokenManager[i];
 				if ( token.disconnectEvent == null )
 					continue;
 				this.OnSocketEvent?.Invoke( token.disconnectEvent.Value );
-				token.Close();
-				this._tokens.RemoveAt( i );
-				this._idToTokens.Remove( token.id );
-				this._userTokenPool.Push( token );
+				token.OnDespawn();
+				this._tokenManager.Destroy( i );
 				--i;
 				--count;
 			}

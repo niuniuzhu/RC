@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RC.Core.Misc;
+using RC.Net.Protocol;
+using System;
 using System.Net;
 using System.Net.Sockets;
-using RC.Core.Misc;
-using RC.Net.Protocol;
 
 namespace RC.Net
 {
@@ -11,7 +11,7 @@ namespace RC.Net
 	{
 		public delegate void ProcessDataOutputHandler( Packet packet );
 
-		public ushort id { get; }
+		public ushort id { get; private set; }
 		public SocketEvent? disconnectEvent => this._disconnectEvent;
 		public EndPoint remoteEndPoint => this._conn?.RemoteEndPoint;
 
@@ -23,48 +23,48 @@ namespace RC.Net
 		private SocketEvent? _disconnectEvent;
 		private readonly StreamBuffer _cache = new StreamBuffer();
 
-		internal TCPUserToken( TCPServer server, ushort id )
+		internal TCPUserToken( ushort id )
 		{
 			this.id = id;
-			this._server = server;
 			this.receiveEventArgs = new SocketAsyncEventArgs();
 			this.receiveEventArgs.SetBuffer( new byte[NetworkConfig.BUFFER_SIZE], 0, NetworkConfig.BUFFER_SIZE );
 			this.receiveEventArgs.UserToken = this;
 			this.receiveEventArgs.Completed += this.OnIOComplete;
 		}
 
-		internal void Dispose()
+		public void Dispose()
 		{
 			this.receiveEventArgs.Completed -= this.OnIOComplete;
 			this.receiveEventArgs.UserToken = null;
 			this.receiveEventArgs = null;
-			this._server = null;
 		}
 
-		internal void OnAccepted( Socket conn, long connectTime )
+		public void OnSpawn( TCPServer server, Socket conn, long connectTime )
 		{
+			this._server = server;
 			this._activeDateTime = connectTime;
 			this._conn = conn;
 		}
 
-		internal void MarkToDisconnect( string msg, SocketError errorCode )
-		{
-			if ( this._disconnectEvent != null )
-				return;
-			this._disconnectEvent = new SocketEvent( SocketEvent.Type.Disconnect, msg, errorCode, this );
-		}
-
-		internal void Close()
+		public void OnDespawn()
 		{
 			if ( this._conn == null )
 				return;
-
 			if ( this._conn.Connected )
 				this._conn.Shutdown( SocketShutdown.Both );
 			this._conn.Close();
 			this._conn = null;
 			this._disconnectEvent = null;
-			this._cache.Clear();
+			lock ( this._cache )
+				this._cache.Clear();
+			this._server = null;
+		}
+
+		public void MarkToDisconnect( string msg, SocketError errorCode )
+		{
+			if ( this._disconnectEvent != null )
+				return;
+			this._disconnectEvent = new SocketEvent( SocketEvent.Type.Disconnect, msg, errorCode, this );
 		}
 
 		private void OnIOComplete( object sender, SocketAsyncEventArgs asyncEventArgs )
@@ -72,7 +72,7 @@ namespace RC.Net
 			switch ( asyncEventArgs.LastOperation )
 			{
 				case SocketAsyncOperation.Receive:
-					this._server.ProcessReceive( asyncEventArgs );
+					this._server?.ProcessReceive( asyncEventArgs );
 					break;
 			}
 		}
@@ -90,25 +90,30 @@ namespace RC.Net
 
 		internal void ProcessData( ProcessDataOutputHandler outputHandler )
 		{
-			if ( this._cache.length == 0 )
-				return;
+			lock ( this._cache )
+			{
+				if ( this._cache.length == 0 )
+					return;
+			}
 
 			this._activeDateTime = TimeUtils.utcTime;
 
 			byte[] data;
+			long cacheLength;
 			lock ( this._cache )
 			{
 				int len = LengthEncoder.Decode( this._cache.GetBuffer(), 0, this._cache.position, out data );
 				if ( data == null )
 					return;
 				this._cache.Strip( len, ( int )this._cache.length - len );
+				cacheLength = this._cache.length;
 			}
 
 			Packet packet = NetworkHelper.DecodePacket( data, 0, data.Length );
 			packet.OnReceive();
 			outputHandler.Invoke( packet );
 
-			if ( this._cache.length > 0 )
+			if ( cacheLength > 0 )
 				this.ProcessData( outputHandler );
 		}
 
