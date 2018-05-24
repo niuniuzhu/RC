@@ -1,39 +1,40 @@
-﻿using System;
-using RC.Core.Misc;
-
-namespace RC.Net.Protocol
+﻿namespace RC.Net.Protocol
 {
 	public abstract class Packet : Serializable
 	{
 		public byte module { get; private set; }
 		public ushort command { get; private set; }
-		public uint createTime { get; private set; }
-		public ulong pid { get; private set; }
+		public int replyID { get; private set; }
 
-		protected Packet( byte module, ushort command )
+		public ushort pid;
+		public ushort srcPid;
+		public bool isRPCReturn;
+
+		protected Packet( byte module, ushort command, int replyID )
 		{
 			this.module = module;
 			this.command = command;
-			this.createTime = ( uint )TimeUtils.utcTime;
+			this.replyID = replyID;
 		}
 
 		protected override void InternalSerialize( StreamBuffer buffer )
 		{
-			byte[] data = new byte[8];
-			data[0] = this.module;
-			ByteUtils.Encode16u( data, 1, this.command );
-			ByteUtils.Encode32u( data, 3, this.createTime );
-			buffer.Write( data );
-			this.pid = BitConverter.ToUInt64( data, 0 );
+			buffer.Write( this.module );
+			buffer.Write( this.command );
+			buffer.Write( this.pid );
+			buffer.Write( this.isRPCReturn );
+			if ( this.isRPCReturn )
+				buffer.Write( this.srcPid );
 		}
 
 		protected override void InternalDeserialize( StreamBuffer buffer )
 		{
-			byte[] data = buffer.ReadBytes( 8 );
-			this.module = data[0];
-			this.command = ByteUtils.Decode16u( data, 1 );
-			this.createTime = ByteUtils.Decode32u( data, 3 );
-			this.pid = BitConverter.ToUInt64( data, 0 );
+			this.module = buffer.ReadByte();
+			this.command = buffer.ReadUShort();
+			this.pid = buffer.ReadUShort();
+			this.isRPCReturn = buffer.ReadBool();
+			if ( this.isRPCReturn )
+				this.srcPid = buffer.ReadUShort();
 		}
 
 		internal void OnSend()

@@ -30,6 +30,7 @@ namespace RC.Net
 		private readonly NetworkUpdateContext _updateContext = new NetworkUpdateContext();
 		private readonly SwitchQueue<ReceivedData> _receivedDatas = new SwitchQueue<ReceivedData>();
 		private readonly SimpleScheduler _pingScheduler = new SimpleScheduler();
+		private readonly ClientRPCManager _rpcManager = new ClientRPCManager();
 
 		internal KCPClient()
 		{
@@ -62,6 +63,7 @@ namespace RC.Net
 
 			client.Close();
 			client.Dispose();
+			this._rpcManager.Clear();
 		}
 
 		private void MarkToClose( string msg, SocketError errorCode )
@@ -96,18 +98,19 @@ namespace RC.Net
 			this.Send( new PacketHeartBeat( 0 ) );
 		}
 
-		public void Send( Packet packet )
+		public void Send( Packet packet, RPCHandler callback = null )
 		{
+			this._rpcManager.Maped( packet, callback );
 			packet.OnSend();
 			this.Send( NetworkHelper.EncodePacket( packet ) );
 		}
 
-		public void Send( byte[] data )
+		private void Send( byte[] data )
 		{
 			this.Send( data, 0, data.Length );
 		}
 
-		public void Send( byte[] data, int offset, int size )
+		private void Send( byte[] data, int offset, int size )
 		{
 			this._kcpProxy?.Send( data, offset, size );
 		}
@@ -292,6 +295,7 @@ namespace RC.Net
 
 			Packet packet = NetworkHelper.DecodePacket( data, 0, size );
 			packet.OnReceive();
+			this._rpcManager.Invoke( packet );
 			this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Receive, packet, null ) );
 		}
 

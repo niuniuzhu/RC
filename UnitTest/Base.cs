@@ -1,26 +1,17 @@
-﻿using System;
+﻿using RC.Core.Structure;
+using System;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
-using Example.Misc;
-using Example.Properties;
-using RC.Core.Structure;
 
-namespace Example
+namespace UnitTest
 {
 	public abstract class Base
 	{
-		protected bool _disposed;
-		protected readonly SwitchQueue<string> _inputQueue = new SwitchQueue<string>();
+		private bool _disposed;
+		private readonly SwitchQueue<string> _inputQueue = new SwitchQueue<string>();
 
 		protected Base()
 		{
-			AssemblyName[] assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies();
-			foreach ( AssemblyName assembly in assemblies )
-				Assembly.Load( assembly );
-
-			LoggerProxy.Init( Resources.log4net_config );
-
 			Thread inputThread = new Thread( this.InputWorker );
 			inputThread.IsBackground = true;
 			inputThread.Start();

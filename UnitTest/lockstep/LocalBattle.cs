@@ -4,7 +4,7 @@ using RC.Game.Logic.Components;
 using RC.Game.Protocol;
 using RC.Net;
 
-namespace Example.lockstep
+namespace UnitTest.lockstep
 {
 	public class LocalBattle
 	{

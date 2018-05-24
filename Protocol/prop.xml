@@ -66,7 +66,7 @@
 		</struct>
 	</structs>
 	<modules>
-		<module id="0" key="LV_BATTLE">
+		<module id="100" key="LV_BATTLE">
 			<packet cmd="0" struct="keyframe" key="KEYFRAME"/>
 			<packet cmd="1" key="CREATE"/>
 			<packet cmd="2" key="DESTROY"/>
@@ -75,8 +75,12 @@
 			<packet cmd="5" struct="ulong" key="ENTITY_DESTROY"/>
 			<packet cmd="6" struct="transform" key="TRANSFORM"/>
 		</module>
-		<module id="1" key="BATTLE">
-			<packet cmd="0" struct="frame_info" key="SC_FRAME"/>
+		<module id="101" key="BATTLE">
+			<packet cmd="1000" struct="frame_info" key="SC_FRAME"/>
+		</module>
+		<module id="255" key="TEST">
+			<packet cmd="0" struct="string" reply="255, 1000" key="CS_RPC"/>
+			<packet cmd="1000" struct="string" key="SC_RPC"/>
 		</module>
 	</modules>
 </packet-defs>

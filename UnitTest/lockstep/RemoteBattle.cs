@@ -5,7 +5,7 @@ using RC.Core.Misc;
 using RC.Net;
 using RC.Net.Protocol;
 
-namespace Example.lockstep
+namespace UnitTest.lockstep
 {
 	public class RemoteBattle
 	{

@@ -3,21 +3,21 @@ using RC.Net.Protocol;
 
 namespace RC.Game.Protocol
 {
-	[Packet( 0, 4 )]
+	[Packet( 100, 4 )]
 	public class _PACKET_LV_BATTLE_ENTITY_START : Packet
 	{
 		public _DTO_ulong dto;
 
-		public _PACKET_LV_BATTLE_ENTITY_START() : base( 0, 4 )
+		public _PACKET_LV_BATTLE_ENTITY_START() : base( 100, 4, -1 )
 		{
 		}
 
-		public _PACKET_LV_BATTLE_ENTITY_START( _DTO_ulong dto ) : base( 0, 4 )
+		public _PACKET_LV_BATTLE_ENTITY_START( _DTO_ulong dto ) : base( 100, 4, -1 )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_LV_BATTLE_ENTITY_START( ulong value ) : base( 0, 4 )
+		public _PACKET_LV_BATTLE_ENTITY_START( ulong value ) : base( 100, 4, -1 )
 		{
 			this.dto = new _DTO_ulong( value );
 		}

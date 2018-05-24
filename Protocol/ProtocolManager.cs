@@ -30,14 +30,16 @@ namespace RC.Game.Protocol
 
 		private static readonly Dictionary<int, Type> PACKET_MAP = new Dictionary<int, Type>
 		{
-			{ EncodeID( 0, 0 ), typeof( _PACKET_LV_BATTLE_KEYFRAME ) },
-{ EncodeID( 0, 1 ), typeof( _PACKET_LV_BATTLE_CREATE ) },
-{ EncodeID( 0, 2 ), typeof( _PACKET_LV_BATTLE_DESTROY ) },
-{ EncodeID( 0, 3 ), typeof( _PACKET_LV_BATTLE_ENTITY_AWAKE ) },
-{ EncodeID( 0, 4 ), typeof( _PACKET_LV_BATTLE_ENTITY_START ) },
-{ EncodeID( 0, 5 ), typeof( _PACKET_LV_BATTLE_ENTITY_DESTROY ) },
-{ EncodeID( 0, 6 ), typeof( _PACKET_LV_BATTLE_TRANSFORM ) },
-{ EncodeID( 1, 0 ), typeof( _PACKET_BATTLE_SC_FRAME ) },
+			{ EncodeID( 100, 0 ), typeof( _PACKET_LV_BATTLE_KEYFRAME ) },
+{ EncodeID( 100, 1 ), typeof( _PACKET_LV_BATTLE_CREATE ) },
+{ EncodeID( 100, 2 ), typeof( _PACKET_LV_BATTLE_DESTROY ) },
+{ EncodeID( 100, 3 ), typeof( _PACKET_LV_BATTLE_ENTITY_AWAKE ) },
+{ EncodeID( 100, 4 ), typeof( _PACKET_LV_BATTLE_ENTITY_START ) },
+{ EncodeID( 100, 5 ), typeof( _PACKET_LV_BATTLE_ENTITY_DESTROY ) },
+{ EncodeID( 100, 6 ), typeof( _PACKET_LV_BATTLE_TRANSFORM ) },
+{ EncodeID( 101, 1000 ), typeof( _PACKET_BATTLE_SC_FRAME ) },
+{ EncodeID( 255, 0 ), typeof( _PACKET_TEST_CS_RPC ) },
+{ EncodeID( 255, 1000 ), typeof( _PACKET_TEST_SC_RPC ) },
 		};
 		
 		public static Type GetDTOType( ushort dtoId )
@@ -210,6 +212,14 @@ public static _PACKET_BATTLE_SC_FRAME PACKET_BATTLE_SC_FRAME( _DTO_frame_info dt
 		{
 			return new _PACKET_BATTLE_SC_FRAME( dto );
 		}
+public static _PACKET_TEST_CS_RPC PACKET_TEST_CS_RPC( _DTO_string dto )
+		{
+			return new _PACKET_TEST_CS_RPC( dto );
+		}
+public static _PACKET_TEST_SC_RPC PACKET_TEST_SC_RPC( _DTO_string dto )
+		{
+			return new _PACKET_TEST_SC_RPC( dto );
+		}
 		public static _PACKET_LV_BATTLE_KEYFRAME PACKET_LV_BATTLE_KEYFRAME(  )
 		{
 			return new _PACKET_LV_BATTLE_KEYFRAME(  );
@@ -266,85 +276,125 @@ public static _PACKET_BATTLE_SC_FRAME PACKET_BATTLE_SC_FRAME( _DTO_action_info[]
 		{
 			return new _PACKET_BATTLE_SC_FRAME( actions,frameId );
 		}
-		public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter, _DTO_keyframe dto )
+public static _PACKET_TEST_CS_RPC PACKET_TEST_CS_RPC(  )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME( dto ) );
+			return new _PACKET_TEST_CS_RPC(  );
 		}
-public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter, _DTO_ulong dto )
+public static _PACKET_TEST_CS_RPC PACKET_TEST_CS_RPC( string value )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE( dto ) );
+			return new _PACKET_TEST_CS_RPC( value );
 		}
-public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter, _DTO_ulong dto )
+public static _PACKET_TEST_SC_RPC PACKET_TEST_SC_RPC(  )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START( dto ) );
+			return new _PACKET_TEST_SC_RPC(  );
 		}
-public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter, _DTO_ulong dto )
+public static _PACKET_TEST_SC_RPC PACKET_TEST_SC_RPC( string value )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY( dto ) );
+			return new _PACKET_TEST_SC_RPC( value );
 		}
-public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter, _DTO_transform dto )
+		public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter, _DTO_keyframe dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM( dto ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME( dto ),callback );
 		}
-public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_frame_info dto )
+public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter, _DTO_ulong dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( dto ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE( dto ),callback );
 		}
-		public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter )
+public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter, _DTO_ulong dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter, int frame )
+public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter, _DTO_ulong dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME( frame ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_CREATE( this INetClient transmitter )
+public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter, _DTO_transform dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_CREATE(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_DESTROY( this INetClient transmitter )
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_frame_info dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_DESTROY(  ) );
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter )
+public static void CALL_TEST_CS_RPC( this INetClient transmitter, _DTO_string dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE(  ) );
+			transmitter.Send( new _PACKET_TEST_CS_RPC( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter, ulong value )
+public static void CALL_TEST_SC_RPC( this INetClient transmitter, _DTO_string dto, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE( value ) );
+			transmitter.Send( new _PACKET_TEST_SC_RPC( dto ),callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter )
+		public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME(  ), callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter, ulong value )
+public static void CALL_LV_BATTLE_KEYFRAME( this INetClient transmitter, int frame, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START( value ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_KEYFRAME( frame ), callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter )
+public static void CALL_LV_BATTLE_CREATE( this INetClient transmitter, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_CREATE(  ), callback );
 		}
-public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter, ulong value )
+public static void CALL_LV_BATTLE_DESTROY( this INetClient transmitter, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY( value ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_DESTROY(  ), callback );
 		}
-public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter )
+public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE(  ), callback );
 		}
-public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter, float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z )
+public static void CALL_LV_BATTLE_ENTITY_AWAKE( this INetClient transmitter, ulong value, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_AWAKE( value ), callback );
 		}
-public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter )
+public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_BATTLE_SC_FRAME(  ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START(  ), callback );
 		}
-public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_action_info[] actions,int frameId )
+public static void CALL_LV_BATTLE_ENTITY_START( this INetClient transmitter, ulong value, RPCHandler callback = null )
 		{
-			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( actions,frameId ) );
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_START( value ), callback );
+		}
+public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY(  ), callback );
+		}
+public static void CALL_LV_BATTLE_ENTITY_DESTROY( this INetClient transmitter, ulong value, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_LV_BATTLE_ENTITY_DESTROY( value ), callback );
+		}
+public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM(  ), callback );
+		}
+public static void CALL_LV_BATTLE_TRANSFORM( this INetClient transmitter, float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_LV_BATTLE_TRANSFORM( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z ), callback );
+		}
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME(  ), callback );
+		}
+public static void CALL_BATTLE_SC_FRAME( this INetClient transmitter, _DTO_action_info[] actions,int frameId, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_BATTLE_SC_FRAME( actions,frameId ), callback );
+		}
+public static void CALL_TEST_CS_RPC( this INetClient transmitter, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_TEST_CS_RPC(  ), callback );
+		}
+public static void CALL_TEST_CS_RPC( this INetClient transmitter, string value, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_TEST_CS_RPC( value ), callback );
+		}
+public static void CALL_TEST_SC_RPC( this INetClient transmitter, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_TEST_SC_RPC(  ), callback );
+		}
+public static void CALL_TEST_SC_RPC( this INetClient transmitter, string value, RPCHandler callback = null )
+		{
+			transmitter.Send( new _PACKET_TEST_SC_RPC( value ), callback );
 		}
 	}
 }

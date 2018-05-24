@@ -146,14 +146,19 @@ namespace RC.Net
 			GetServer( serverName )?.Start( port );
 		}
 
-		public static void Send( string serverName, ushort tokenId, Packet packet )
+		public static void Send( string serverName, ushort tokenId, Packet packet, RPCHandler callback = null )
 		{
-			GetServer( serverName )?.Send( tokenId, packet );
+			GetServer( serverName )?.Send( tokenId, packet, callback );
 		}
 
 		public static void Send( string serverName, IEnumerable<ushort> tokenIds, Packet packet )
 		{
 			GetServer( serverName )?.Send( tokenIds, packet );
+		}
+
+		public static void SendAll( string serverName, Packet packet )
+		{
+			GetServer( serverName )?.SendAll( packet );
 		}
 		#endregion
 
@@ -210,9 +215,9 @@ namespace RC.Net
 			GetClient( clientName )?.Connect( ip, port );
 		}
 
-		public static void Send( string clientName, Packet packet )
+		public static void Send( string clientName, Packet packet, RPCHandler callback = null )
 		{
-			GetClient( clientName )?.Send( packet );
+			GetClient( clientName )?.Send( packet, callback );
 		}
 		#endregion
 	}

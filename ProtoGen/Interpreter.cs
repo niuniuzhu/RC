@@ -73,7 +73,15 @@ namespace RC.ProtoGen
 					PacketEntry packet = new PacketEntry( module );
 					packet.id = packetNode.GetAttribute( "cmd" );
 					packet.key = packetNode.GetAttribute( "key" );
+					packet.reply = -1;
 					packet.dto = this.FindDTO( packetNode.GetAttribute( "struct" ) );
+					if ( packetNode.HasAttribute( "reply" ) )
+					{
+						string[] reply = packetNode.GetAttribute( "reply" ).Split( ',' );
+						byte m = byte.Parse( reply[0] );
+						ushort c = ushort.Parse( reply[1] );
+						packet.reply = PacketEntry.EncodeID( m, c );
+					}
 					module.packets.Add( packet );
 				}
 			}

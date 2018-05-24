@@ -6,7 +6,6 @@ namespace RC.Net
 	{
 		ushort id { get; }
 		void Dispose();
-		void Send( byte[] data );
 		void Send( Packet packet );
 	}
 }

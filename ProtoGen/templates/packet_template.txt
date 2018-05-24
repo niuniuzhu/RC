@@ -8,16 +8,16 @@ namespace [ns]
 	{
 		[option]public [dto_cls_name] dto;[/option]
 
-		public [cls_name]() : base( [module], [cmd] )
+		public [cls_name]() : base( [module], [cmd], [reply] )
 		{
 		}
 
-		[option]public [cls_name]( [dto_cls_name] dto ) : base( [module], [cmd] )
+		[option]public [cls_name]( [dto_cls_name] dto ) : base( [module], [cmd], [reply] )
 		{
 			this.dto = dto;
 		}
 
-		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd] )
+		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd], [reply] )
 		{
 			this.dto = new [dto_cls_name]( [fields ,][field_name][/fields] );
 		}[/ctors][/option]

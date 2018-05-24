@@ -1,7 +1,7 @@
-﻿using RC.Net;
-using System.Threading;
+﻿using System.Threading;
+using RC.Net;
 
-namespace Example.lockstep
+namespace UnitTest.lockstep
 {
 	public class Lockstep : Base
 	{

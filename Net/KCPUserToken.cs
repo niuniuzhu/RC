@@ -93,7 +93,7 @@ namespace RC.Net
 			this.Send( data, 0, data.Length );
 		}
 
-		public void Send( byte[] data, int offset, int size )
+		private void Send( byte[] data, int offset, int size )
 		{
 			this._kcpProxy.Send( data, offset, size );
 		}

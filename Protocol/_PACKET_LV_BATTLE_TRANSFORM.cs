@@ -3,21 +3,21 @@ using RC.Net.Protocol;
 
 namespace RC.Game.Protocol
 {
-	[Packet( 0, 6 )]
+	[Packet( 100, 6 )]
 	public class _PACKET_LV_BATTLE_TRANSFORM : Packet
 	{
 		public _DTO_transform dto;
 
-		public _PACKET_LV_BATTLE_TRANSFORM() : base( 0, 6 )
+		public _PACKET_LV_BATTLE_TRANSFORM() : base( 100, 6, -1 )
 		{
 		}
 
-		public _PACKET_LV_BATTLE_TRANSFORM( _DTO_transform dto ) : base( 0, 6 )
+		public _PACKET_LV_BATTLE_TRANSFORM( _DTO_transform dto ) : base( 100, 6, -1 )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_LV_BATTLE_TRANSFORM( float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z ) : base( 0, 6 )
+		public _PACKET_LV_BATTLE_TRANSFORM( float position_x,float position_y,float position_z,float rotation_x,float rotation_y,float rotation_z ) : base( 100, 6, -1 )
 		{
 			this.dto = new _DTO_transform( position_x,position_y,position_z,rotation_x,rotation_y,rotation_z );
 		}

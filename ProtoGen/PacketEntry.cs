@@ -10,6 +10,7 @@ namespace RC.ProtoGen
 	{
 		public string id;
 		public string key;
+		public int reply; 
 		public DTOEntry dto;
 
 		public ModuleEntry module { get; }
@@ -53,6 +54,7 @@ namespace RC.ProtoGen
 			output = output.Replace( "[cls_name]", this.ClsName() );
 			output = output.Replace( "[module]", this.module.id );
 			output = output.Replace( "[cmd]", this.id );
+			output = output.Replace( "[reply]", string.Empty + this.reply );
 			output = output.Replace( "[ns]", ns );
 
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
@@ -110,6 +112,11 @@ namespace RC.ProtoGen
 				input = input.Replace( match.Value, sb.ToString() );
 			}
 			return input;
+		}
+
+		public static int EncodeID( byte module, ushort cmd )
+		{
+			return ( module << 16 ) | cmd;
 		}
 	}
 }

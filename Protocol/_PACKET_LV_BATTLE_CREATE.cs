@@ -3,12 +3,12 @@ using RC.Net.Protocol;
 
 namespace RC.Game.Protocol
 {
-	[Packet( 0, 1 )]
+	[Packet( 100, 1 )]
 	public class _PACKET_LV_BATTLE_CREATE : Packet
 	{
 		
 
-		public _PACKET_LV_BATTLE_CREATE() : base( 0, 1 )
+		public _PACKET_LV_BATTLE_CREATE() : base( 100, 1, -1 )
 		{
 		}
 

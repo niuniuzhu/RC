@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net.Sockets;
-using RC.Core.Misc;
+﻿using RC.Core.Misc;
 using RC.Net.Protocol;
+using System;
+using System.Net.Sockets;
 
 namespace RC.Net
 {
@@ -25,6 +25,7 @@ namespace RC.Net
 		private readonly StreamBuffer _cache = new StreamBuffer();
 		private readonly NetworkUpdateContext _updateContext = new NetworkUpdateContext();
 		private readonly SimpleScheduler _pingScheduler = new SimpleScheduler();
+		private readonly ClientRPCManager _rpcManager = new ClientRPCManager();
 
 		internal TCPClient()
 		{
@@ -54,6 +55,7 @@ namespace RC.Net
 			socket.Close();
 
 			this._pingScheduler.Stop();
+			this._rpcManager.Clear();
 		}
 
 		private void MarkToClose( string msg, SocketError errorCode )
@@ -155,18 +157,19 @@ namespace RC.Net
 			this.Send( new PacketHeartBeat( 0 ) );
 		}
 
-		public void Send( Packet packet )
+		public void Send( Packet packet, RPCHandler callback = null )
 		{
+			this._rpcManager.Maped( packet, callback );
 			packet.OnSend();
 			this.Send( NetworkHelper.EncodePacket( packet ) );
 		}
 
-		public void Send( byte[] data )
+		private void Send( byte[] data )
 		{
 			this.Send( data, 0, data.Length );
 		}
 
-		public void Send( byte[] data, int offset, int size )
+		private void Send( byte[] data, int offset, int size )
 		{
 			if ( this._socket == null )
 				return;
@@ -208,7 +211,10 @@ namespace RC.Net
 				this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Connect, string.Empty, SocketError.Success, null ) );
 			}
 			else
+			{
+				this._rpcManager.Invoke( packet );
 				this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Receive, packet, null ) );
+			}
 
 			if ( this._cache.length > 0 )
 				this.ProcessReceiveDatas();

@@ -1,12 +1,15 @@
-﻿using System;
+﻿using log4net;
+using log4net.Config;
+using log4net.Repository;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using log4net;
-using log4net.Config;
-using log4net.Repository;
+using log4net.Appender;
+using log4net.Core;
+using log4net.Layout;
 
-namespace Example.Misc
+namespace UnitTest.Misc
 {
 	public static class LoggerProxy
 	{
@@ -16,12 +19,25 @@ namespace Example.Misc
 		{
 			RC.Core.Misc.Logger.SetActions( Log, Debug, Log, Info, Warn, Error, Fatal );
 
+			//using ( var stream = GenerateStreamFromString( config ) )
+			//{
+			//	XmlConfigurator.Configure( repository, stream );
+			//}
+
 			ILoggerRepository repository = LogManager.CreateRepository( "NETCoreRepository" );
-			using ( var stream = GenerateStreamFromString( config ) )
+			PatternLayout patternLayout = new PatternLayout
 			{
-				XmlConfigurator.Configure( repository, stream );
-			}
-			_log = LogManager.GetLogger( repository.Name, "Server" );
+				ConversionPattern = "%date{MM-dd HH:mm:ss,fff} [%thread] %-5level %logger - %message%newline"
+			};
+			patternLayout.ActivateOptions();
+
+			UnitTestAppender unityLogger = new UnitTestAppender
+			{
+				Layout = new PatternLayout()
+			};
+			unityLogger.ActivateOptions();
+			BasicConfigurator.Configure( repository, unityLogger );
+			_log = LogManager.GetLogger( repository.Name, "UnitTest" );
 		}
 
 		public static void Dispose()
@@ -88,6 +104,16 @@ namespace Example.Misc
 					sb.AppendLine();
 			}
 			return sb.ToString();
+		}
+	}
+
+	class UnitTestAppender : AppenderSkeleton
+	{
+		protected override void Append( LoggingEvent loggingEvent )
+		{
+			string message = this.RenderLoggingEvent( loggingEvent );
+
+			UnitTest.output.WriteLine( message );
 		}
 	}
 }

@@ -3,21 +3,21 @@ using RC.Net.Protocol;
 
 namespace RC.Game.Protocol
 {
-	[Packet( 1, 0 )]
+	[Packet( 101, 1000 )]
 	public class _PACKET_BATTLE_SC_FRAME : Packet
 	{
 		public _DTO_frame_info dto;
 
-		public _PACKET_BATTLE_SC_FRAME() : base( 1, 0 )
+		public _PACKET_BATTLE_SC_FRAME() : base( 101, 1000, -1 )
 		{
 		}
 
-		public _PACKET_BATTLE_SC_FRAME( _DTO_frame_info dto ) : base( 1, 0 )
+		public _PACKET_BATTLE_SC_FRAME( _DTO_frame_info dto ) : base( 101, 1000, -1 )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_BATTLE_SC_FRAME( _DTO_action_info[] actions,int frameId ) : base( 1, 0 )
+		public _PACKET_BATTLE_SC_FRAME( _DTO_action_info[] actions,int frameId ) : base( 101, 1000, -1 )
 		{
 			this.dto = new _DTO_frame_info( actions,frameId );
 		}

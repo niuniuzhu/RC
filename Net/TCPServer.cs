@@ -18,6 +18,7 @@ namespace RC.Net
 		private readonly SwitchQueue<ReceivedData> _receivedDatas = new SwitchQueue<ReceivedData>();
 		private readonly NetworkUpdateContext _updateContext = new NetworkUpdateContext();
 		private readonly UserTokenManager<TCPUserToken> _tokenManager = new UserTokenManager<TCPUserToken>();
+		private readonly ServerRPCManager _rpcManager = new ServerRPCManager();
 
 		internal TCPServer( int maxClient )
 		{
@@ -30,15 +31,12 @@ namespace RC.Net
 			this._tokenManager.Dispose();
 		}
 
-		public void Send( ushort tokenId, Packet packet )
+		public void Send( ushort tokenId, Packet packet, RPCHandler callback )
 		{
 			TCPUserToken token = this._tokenManager.Get( tokenId );
-			if ( token == null )
-			{
-				Logger.Warn( $"Usertoken {tokenId} not found" );
-				return;
-			}
-			token.Send( packet );
+			this._rpcManager.Maped( token, packet, callback );
+			packet.OnSend();
+			token?.Send( packet );
 		}
 
 		public void Send( IEnumerable<ushort> tokenIds, Packet packet )
@@ -48,17 +46,13 @@ namespace RC.Net
 			foreach ( ushort tokenId in tokenIds )
 			{
 				TCPUserToken token = this._tokenManager.Get( tokenId );
-				if ( token == null )
-				{
-					Logger.Warn( $"Usertoken {tokenId} not found" );
-					continue;
-				}
-				token.Send( data );
+				token?.Send( data );
 			}
 		}
 
 		public void SendAll( Packet packet )
 		{
+			packet.OnSend();
 			foreach ( TCPUserToken token in this._tokenManager )
 				token.Send( packet );
 		}
@@ -78,6 +72,7 @@ namespace RC.Net
 					TCPUserToken token = this._tokenManager[0];
 					this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Disconnect, "Server stoped", SocketError.Shutdown, token ) );
 					token.OnDespawn();
+					this._rpcManager.OnUserTokenDespawn( token );
 					this._tokenManager.Destroy( 0 );
 				}
 			}
@@ -236,7 +231,10 @@ namespace RC.Net
 								if ( packet.module == NetworkConfig.INTERNAL_MODULE && packet.command == 0 )
 									token.Send( new PacketHeartBeat( ( ( PacketHeartBeat )packet ).localTime ) );
 								else
+								{
+									this._rpcManager.Invoke( token, packet );
 									this.OnSocketEvent?.Invoke( new SocketEvent( SocketEvent.Type.Receive, packet, token ) );
+								}
 							} );
 						}
 						break;
@@ -260,6 +258,7 @@ namespace RC.Net
 					continue;
 				this.OnSocketEvent?.Invoke( token.disconnectEvent.Value );
 				token.OnDespawn();
+				this._rpcManager.OnUserTokenDespawn( token );
 				this._tokenManager.Destroy( i );
 				--i;
 				--count;

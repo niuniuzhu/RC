@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using RC.Core.Misc;
 
 namespace RC.Net
 {
@@ -44,7 +45,11 @@ namespace RC.Net
 
 		public T Get( ushort tokenID )
 		{
-			this._idToTokens.TryGetValue( tokenID, out T token );
+			if ( !this._idToTokens.TryGetValue( tokenID, out T token ) )
+			{
+				Logger.Warn( $"Usertoken {tokenID} not found" );
+				return default( T );
+			}
 			return token;
 		}
 

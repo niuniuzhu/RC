@@ -1,7 +1,6 @@
 ﻿using RC.Core.Structure;
 using RC.Net.Protocol;
 using System.Collections.Generic;
-using RC.Core.Misc;
 
 namespace RC.Net
 {
@@ -29,11 +28,7 @@ namespace RC.Net
 		{
 		}
 
-		public void Send( Packet packet )
-		{
-		}
-
-		public void Send( ushort tokenId, Packet packet )
+		public void Send( ushort tokenId, Packet packet, RPCHandler callback )
 		{
 		}
 

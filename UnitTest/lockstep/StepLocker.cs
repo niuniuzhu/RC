@@ -6,7 +6,7 @@ using RC.Game.Protocol;
 using RC.Net;
 using RC.Net.Protocol;
 
-namespace Example.lockstep
+namespace UnitTest.lockstep
 {
 	public class StepLocker
 	{

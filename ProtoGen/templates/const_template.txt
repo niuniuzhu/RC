@@ -9,4 +9,5 @@ namespace [ns]
 	{
 		[packets \n]public const ushort [key] = [id];[/packets]
 	}
+
 }

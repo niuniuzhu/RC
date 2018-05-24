@@ -9,7 +9,7 @@ namespace RC.Net
 		void Dispose();
 		void Close();
 		void Connect( string ip, int port );
-		void Send( Packet packet );
+		void Send( Packet packet, RPCHandler callback );
 		void Update( long dt );
 	}
 }

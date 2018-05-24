@@ -11,11 +11,11 @@ namespace RC.Net.Protocol
 		public long appxRemoteTime { get; private set; }
 		public long timeDiff { get; private set; }
 
-		public PacketHeartBeat() : base( NetworkConfig.INTERNAL_MODULE, 0 )//外部协议模块id从100开始
+		public PacketHeartBeat() : base( NetworkConfig.INTERNAL_MODULE, 0, -1 )//外部协议模块id从100开始
 		{
 		}
 
-		public PacketHeartBeat( long remoteTime ) : base( NetworkConfig.INTERNAL_MODULE, 0 )
+		public PacketHeartBeat( long remoteTime ) : base( NetworkConfig.INTERNAL_MODULE, 0, -1 )
 		{
 			this.remoteTime = remoteTime;
 		}
