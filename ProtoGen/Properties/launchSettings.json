@@ -1,7 +1,8 @@
 {
   "profiles": {
     "ProtoGen": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "D:\\Projects\\RC\\Protocol\\prop.xml D:\\Projects\\RC\\Protocol RC.Game.Protocol"
     }
   }
 }

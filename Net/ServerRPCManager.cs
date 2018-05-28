@@ -22,9 +22,9 @@ namespace RC.Net
 			this._rpcsHandlers.Remove( token );
 		}
 
-		public void Maped( IUserToken token, Packet packet, RPCHandler callback )
+		public void Accept( IUserToken token, Packet packet, RPCHandler callback )
 		{
-			if ( packet.replyID < 0 )
+			if ( !packet.isRPCCall )
 				return;
 			ushort pid = this.GetNextPacketId( token );
 			packet.pid = pid;

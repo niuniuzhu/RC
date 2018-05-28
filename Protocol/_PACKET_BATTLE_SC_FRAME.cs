@@ -8,16 +8,16 @@ namespace RC.Game.Protocol
 	{
 		public _DTO_frame_info dto;
 
-		public _PACKET_BATTLE_SC_FRAME() : base( 101, 1000, -1 )
+		public _PACKET_BATTLE_SC_FRAME() : base( 101, 1000, false )
 		{
 		}
 
-		public _PACKET_BATTLE_SC_FRAME( _DTO_frame_info dto ) : base( 101, 1000, -1 )
+		public _PACKET_BATTLE_SC_FRAME( _DTO_frame_info dto ) : base( 101, 1000, false )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_BATTLE_SC_FRAME( _DTO_action_info[] actions,int frameId ) : base( 101, 1000, -1 )
+		public _PACKET_BATTLE_SC_FRAME( _DTO_action_info[] actions,int frameId ) : base( 101, 1000, false )
 		{
 			this.dto = new _DTO_frame_info( actions,frameId );
 		}
@@ -34,6 +34,8 @@ namespace RC.Game.Protocol
 			this.dto = new _DTO_frame_info();
 			this.dto.Deserialize( buffer );
 		}
+		
+		
 
 		public override string ToString()
 		{

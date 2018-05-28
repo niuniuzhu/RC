@@ -10,7 +10,7 @@ namespace RC.ProtoGen
 	{
 		public string id;
 		public string key;
-		public int reply; 
+		public string reply;
 		public DTOEntry dto;
 
 		public ModuleEntry module { get; }
@@ -40,21 +40,18 @@ namespace RC.ProtoGen
 			string output = Interpreter.PACKET_TEMPLATE;
 			MatchCollection collection = Interpreter.REGEX_OPTION.Matches( output );
 			foreach ( Match match in collection )
-			{
-				if ( this.dto != null )
-					output = output.Replace( match.Value, match.Groups[1].Value );
-				else
-					output = output.Replace( match.Value, string.Empty );
-			}
+				output = output.Replace( match.Value, this.dto != null ? match.Groups[1].Value : string.Empty );
+
 			if ( this.dto != null )
 			{
 				output = this.ProcessCtors( output );
 				output = output.Replace( "[dto_cls_name]", this.dto.ClsName() );
 			}
+			output = this.ProcessReply( output );
 			output = output.Replace( "[cls_name]", this.ClsName() );
 			output = output.Replace( "[module]", this.module.id );
 			output = output.Replace( "[cmd]", this.id );
-			output = output.Replace( "[reply]", string.Empty + this.reply );
+			output = output.Replace( "[reply]", string.IsNullOrEmpty( this.reply ) ? "false" : "true" );
 			output = output.Replace( "[ns]", ns );
 
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
@@ -114,9 +111,46 @@ namespace RC.ProtoGen
 			return input;
 		}
 
-		public static int EncodeID( byte module, ushort cmd )
+		private string ProcessReply( string input )
 		{
-			return ( module << 16 ) | cmd;
+			Match match = Interpreter.REGEX_REPLY_PACKET.Match( input );
+			if ( string.IsNullOrEmpty( this.reply ) )
+				return input.Replace( match.Value, string.Empty );
+
+			string[] pair = this.reply.Split( ',' );
+			PacketEntry replyPacket = Interpreter.instance.GetPacket( pair[0].Trim(), pair[1].Trim() );
+
+			string template = match.Groups[2].Value.Replace( "[packet_cls_name]", replyPacket.ClsName() );
+			template = template.Replace( "[packet_func_name]", replyPacket.FuncName() );
+
+			string splitChar = match.Groups[1].Value;
+			splitChar = splitChar == "\\n" ? Environment.NewLine : splitChar;
+
+			StringBuilder sb = new StringBuilder();
+			string content = this.ProcessFields( template, null );
+			if ( replyPacket.dto != null )
+				content += splitChar;
+			sb.Append( content );
+
+			if ( replyPacket.dto != null )
+			{
+				content = this.ProcessFields( template, replyPacket.dto.allFields );
+				int c2 = replyPacket.dto.conditions.Count;
+				if ( c2 > 0 )
+					content += splitChar;
+				sb.Append( content );
+
+				for ( int j = 0; j < c2; j++ )
+				{
+					content = this.ProcessFields( template, replyPacket.dto.conditions[j].allFields );
+					if ( j != c2 - 1 )
+						content += splitChar;
+					sb.Append( content );
+				}
+			}
+
+			input = input.Replace( match.Value, sb.ToString() );
+			return input;
 		}
 	}
 }

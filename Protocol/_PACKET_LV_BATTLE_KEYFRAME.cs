@@ -8,16 +8,16 @@ namespace RC.Game.Protocol
 	{
 		public _DTO_keyframe dto;
 
-		public _PACKET_LV_BATTLE_KEYFRAME() : base( 100, 0, -1 )
+		public _PACKET_LV_BATTLE_KEYFRAME() : base( 100, 0, false )
 		{
 		}
 
-		public _PACKET_LV_BATTLE_KEYFRAME( _DTO_keyframe dto ) : base( 100, 0, -1 )
+		public _PACKET_LV_BATTLE_KEYFRAME( _DTO_keyframe dto ) : base( 100, 0, false )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_LV_BATTLE_KEYFRAME( int frame ) : base( 100, 0, -1 )
+		public _PACKET_LV_BATTLE_KEYFRAME( int frame ) : base( 100, 0, false )
 		{
 			this.dto = new _DTO_keyframe( frame );
 		}
@@ -34,6 +34,8 @@ namespace RC.Game.Protocol
 			this.dto = new _DTO_keyframe();
 			this.dto.Deserialize( buffer );
 		}
+		
+		
 
 		public override string ToString()
 		{

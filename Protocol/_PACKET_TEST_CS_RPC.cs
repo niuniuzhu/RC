@@ -8,16 +8,16 @@ namespace RC.Game.Protocol
 	{
 		public _DTO_string dto;
 
-		public _PACKET_TEST_CS_RPC() : base( 255, 0, 16712680 )
+		public _PACKET_TEST_CS_RPC() : base( 255, 0, true )
 		{
 		}
 
-		public _PACKET_TEST_CS_RPC( _DTO_string dto ) : base( 255, 0, 16712680 )
+		public _PACKET_TEST_CS_RPC( _DTO_string dto ) : base( 255, 0, true )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_TEST_CS_RPC( string value ) : base( 255, 0, 16712680 )
+		public _PACKET_TEST_CS_RPC( string value ) : base( 255, 0, true )
 		{
 			this.dto = new _DTO_string( value );
 		}
@@ -33,6 +33,21 @@ namespace RC.Game.Protocol
 			base.InternalDeserialize( buffer );
 			this.dto = new _DTO_string();
 			this.dto.Deserialize( buffer );
+		}
+		
+		public _PACKET_TEST_SC_RPC Reply(  )
+		{
+			_PACKET_TEST_SC_RPC packet = new _PACKET_TEST_SC_RPC(  );
+			packet.srcPid = this.pid;
+			packet.isRPCReturn = true;
+			return packet;
+		}
+public _PACKET_TEST_SC_RPC Reply( string value )
+		{
+			_PACKET_TEST_SC_RPC packet = new _PACKET_TEST_SC_RPC( value );
+			packet.srcPid = this.pid;
+			packet.isRPCReturn = true;
+			return packet;
 		}
 
 		public override string ToString()

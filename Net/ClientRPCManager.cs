@@ -14,9 +14,9 @@ namespace RC.Net
 			this._rpcHandlers.Clear();
 		}
 
-		public void Maped( Packet packet, RPCHandler callback )
+		public void Accept( Packet packet, RPCHandler callback )
 		{
-			if ( packet.replyID < 0 )
+			if ( !packet.isRPCCall )
 				return;
 			ushort pid = this.GetNextPacketId();
 			packet.pid = pid;

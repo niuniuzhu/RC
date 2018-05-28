@@ -8,16 +8,16 @@ namespace RC.Game.Protocol
 	{
 		public _DTO_ulong dto;
 
-		public _PACKET_LV_BATTLE_ENTITY_START() : base( 100, 4, -1 )
+		public _PACKET_LV_BATTLE_ENTITY_START() : base( 100, 4, false )
 		{
 		}
 
-		public _PACKET_LV_BATTLE_ENTITY_START( _DTO_ulong dto ) : base( 100, 4, -1 )
+		public _PACKET_LV_BATTLE_ENTITY_START( _DTO_ulong dto ) : base( 100, 4, false )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_LV_BATTLE_ENTITY_START( ulong value ) : base( 100, 4, -1 )
+		public _PACKET_LV_BATTLE_ENTITY_START( ulong value ) : base( 100, 4, false )
 		{
 			this.dto = new _DTO_ulong( value );
 		}
@@ -34,6 +34,8 @@ namespace RC.Game.Protocol
 			this.dto = new _DTO_ulong();
 			this.dto.Deserialize( buffer );
 		}
+		
+		
 
 		public override string ToString()
 		{

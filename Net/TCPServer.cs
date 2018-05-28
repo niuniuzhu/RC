@@ -34,7 +34,7 @@ namespace RC.Net
 		public void Send( ushort tokenId, Packet packet, RPCHandler callback )
 		{
 			TCPUserToken token = this._tokenManager.Get( tokenId );
-			this._rpcManager.Maped( token, packet, callback );
+			this._rpcManager.Accept( token, packet, callback );
 			packet.OnSend();
 			token?.Send( packet );
 		}

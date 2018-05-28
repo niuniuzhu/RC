@@ -5,11 +5,11 @@
 	{
 		public ushort tokenId { get; private set; }
 
-		public PacketAccept() : base( NetworkConfig.INTERNAL_MODULE, 1, -1 )//外部协议模块id从100开始
+		public PacketAccept() : base( NetworkConfig.INTERNAL_MODULE, 1, false )//外部协议模块id从100开始
 		{
 		}
 
-		public PacketAccept( ushort tokenId ) : base( NetworkConfig.INTERNAL_MODULE, 1, -1 )
+		public PacketAccept( ushort tokenId ) : base( NetworkConfig.INTERNAL_MODULE, 1, false )
 		{
 			this.tokenId = tokenId;
 		}

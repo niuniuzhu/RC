@@ -8,16 +8,16 @@ namespace RC.Game.Protocol
 	{
 		public _DTO_string dto;
 
-		public _PACKET_TEST_SC_RPC() : base( 255, 1000, -1 )
+		public _PACKET_TEST_SC_RPC() : base( 255, 1000, false )
 		{
 		}
 
-		public _PACKET_TEST_SC_RPC( _DTO_string dto ) : base( 255, 1000, -1 )
+		public _PACKET_TEST_SC_RPC( _DTO_string dto ) : base( 255, 1000, false )
 		{
 			this.dto = dto;
 		}
 
-		public _PACKET_TEST_SC_RPC( string value ) : base( 255, 1000, -1 )
+		public _PACKET_TEST_SC_RPC( string value ) : base( 255, 1000, false )
 		{
 			this.dto = new _DTO_string( value );
 		}
@@ -34,6 +34,8 @@ namespace RC.Game.Protocol
 			this.dto = new _DTO_string();
 			this.dto.Deserialize( buffer );
 		}
+		
+		
 
 		public override string ToString()
 		{

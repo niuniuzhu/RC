@@ -15,7 +15,7 @@ namespace RC.ProtoGen
 			}
 			string file = args[0];
 			string text = File.ReadAllText( file, Encoding.UTF8 );
-			Interpreter interpreter = new Interpreter();
+			Interpreter interpreter = Interpreter.instance;
 			interpreter.Parse( text );
 			interpreter.Gen( args[1], args[2] );
 			return 0;

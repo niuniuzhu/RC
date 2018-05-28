@@ -34,6 +34,14 @@ namespace [ns]
 			[option]this.dto = new [dto_cls_name]();
 			this.dto.Deserialize( buffer );[/option]
 		}
+		
+		[reply_packet \n]public [packet_cls_name] Reply( [fields ,][field_type] [field_name][/fields] )
+		{
+			[packet_cls_name] packet = new [packet_cls_name]( [fields ,][field_name][/fields] );
+			packet.srcPid = this.pid;
+			packet.isRPCReturn = true;
+			return packet;
+		}[/reply_packet]
 
 		public override string ToString()
 		{

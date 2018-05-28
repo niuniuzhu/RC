@@ -159,7 +159,7 @@ namespace RC.Net
 
 		public void Send( Packet packet, RPCHandler callback = null )
 		{
-			this._rpcManager.Maped( packet, callback );
+			this._rpcManager.Accept( packet, callback );
 			packet.OnSend();
 			this.Send( NetworkHelper.EncodePacket( packet ) );
 		}

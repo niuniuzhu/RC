@@ -12,9 +12,13 @@ namespace RC.ProtoGen
 {
 	public class Interpreter
 	{
+		private static Interpreter _instance;
+		public static Interpreter instance => _instance ?? ( _instance = new Interpreter() );
+
 		public static readonly Regex REGEX_CTOR = new Regex( @"\[ctors\s([^\]]+)\](.*?)\[\/ctors\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_CONDITION_CTOR = new Regex( @"\[condition_ctors\s([^\]]+)\](.*?)\[\/condition_ctors\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_FIELD = new Regex( @"\[fields\s([^\]]+)\](.*?)\[\/fields\]", RegexOptions.Singleline );
+		public static readonly Regex REGEX_REPLY_PACKET = new Regex( @"\[reply_packet\s([^\]]+)\](.*?)\[\/reply_packet\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_SERIALIZE = new Regex( @"\[serialize\s([^\]]+)\](.*?)\[\/serialize\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_CONDITION = new Regex( @"\[condition\s([^\]]+)\](.*?)\[\/condition\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_RW_BUFFER = new Regex( @"\[rw_buffer\s([^\]]+)\](.*?)\[\/rw_buffer\]", RegexOptions.Singleline );
@@ -50,6 +54,31 @@ namespace RC.ProtoGen
 			MGR_TEMPLATE = Resources.mgr_template;
 		}
 
+		private Interpreter()
+		{
+		}
+
+		public PacketEntry GetPacket( string moduleId, string cmd )
+		{
+			ModuleEntry module = null;
+			foreach ( ModuleEntry m in this._modules )
+			{
+				if ( m.id == moduleId )
+				{
+					module = m;
+					break;
+				}
+			}
+			if ( module == null )
+				return null;
+			foreach ( PacketEntry packet in module.packets )
+			{
+				if ( packet.id == cmd )
+					return packet;
+			}
+			return null;
+		}
+
 		public void Parse( string text )
 		{
 			XML xml = new XML( text );
@@ -73,15 +102,9 @@ namespace RC.ProtoGen
 					PacketEntry packet = new PacketEntry( module );
 					packet.id = packetNode.GetAttribute( "cmd" );
 					packet.key = packetNode.GetAttribute( "key" );
-					packet.reply = -1;
 					packet.dto = this.FindDTO( packetNode.GetAttribute( "struct" ) );
 					if ( packetNode.HasAttribute( "reply" ) )
-					{
-						string[] reply = packetNode.GetAttribute( "reply" ).Split( ',' );
-						byte m = byte.Parse( reply[0] );
-						ushort c = ushort.Parse( reply[1] );
-						packet.reply = PacketEntry.EncodeID( m, c );
-					}
+						packet.reply = packetNode.GetAttribute( "reply" );
 					module.packets.Add( packet );
 				}
 			}

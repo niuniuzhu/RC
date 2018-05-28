@@ -4,17 +4,17 @@
 	{
 		public byte module { get; private set; }
 		public ushort command { get; private set; }
-		public int replyID { get; private set; }
+		public bool isRPCCall { get; private set; }
 
 		public ushort pid;
 		public ushort srcPid;
 		public bool isRPCReturn;
 
-		protected Packet( byte module, ushort command, int replyID )
+		protected Packet( byte module, ushort command, bool isRPCCall )
 		{
 			this.module = module;
 			this.command = command;
-			this.replyID = replyID;
+			this.isRPCCall = isRPCCall;
 		}
 
 		protected override void InternalSerialize( StreamBuffer buffer )

@@ -8,7 +8,7 @@ namespace RC.Game.Protocol
 	{
 		
 
-		public _PACKET_LV_BATTLE_CREATE() : base( 100, 1, -1 )
+		public _PACKET_LV_BATTLE_CREATE() : base( 100, 1, false )
 		{
 		}
 
@@ -25,6 +25,8 @@ namespace RC.Game.Protocol
 			base.InternalDeserialize( buffer );
 			
 		}
+		
+		
 
 		public override string ToString()
 		{

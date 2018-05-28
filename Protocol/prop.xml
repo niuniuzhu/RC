@@ -79,7 +79,7 @@
 			<packet cmd="1000" struct="frame_info" key="SC_FRAME"/>
 		</module>
 		<module id="255" key="TEST">
-			<packet cmd="0" struct="string" reply="255, 1000" key="CS_RPC"/>
+			<packet cmd="0" struct="string" reply="255,1000" key="CS_RPC"/>
 			<packet cmd="1000" struct="string" key="SC_RPC"/>
 		</module>
 	</modules>

@@ -39,13 +39,7 @@ namespace UnitTest.NetworkTest
 			{
 				case SocketEvent.Type.Connect:
 					for ( int i = 0; i < 10; i++ )
-						NetworkManager.Send( CLIENT_NAME, ProtocolManager.PACKET_TEST_CS_RPC( "123" ), this.RPCTest );
-					break;
-
-				case SocketEvent.Type.Receive:
-					break;
-
-				case SocketEvent.Type.Close:
+						NetworkManager.Send( CLIENT_NAME, ProtocolManager.PACKET_TEST_CS_RPC( "call" ), this.RPCTest );
 					break;
 			}
 		}
@@ -73,18 +67,14 @@ namespace UnitTest.NetworkTest
 					if ( e.packet.module == Module.TEST &&
 						 e.packet.command == Command.CS_RPC )
 					{
-						_PACKET_TEST_SC_RPC packet = ProtocolManager.PACKET_TEST_SC_RPC( "321" );
-						packet.isRPCReturn = true;
-						packet.srcPid = e.packet.pid;
-						NetworkManager.Send( SERVER_NAME, e.userToken.id, packet );
+						_PACKET_TEST_CS_RPC packet = ( _PACKET_TEST_CS_RPC )e.packet;
+						NetworkManager.Send( SERVER_NAME, e.userToken.id, packet.Reply( "return" ) );
 					}
 					break;
 
 				default:
 					if ( e.errorCode != SocketError.Success )
-					{
 						Logger.Log( $"Socket error, type:{e.type}, code:{e.errorCode}, msg:{e.msg}" );
-					}
 					break;
 			}
 		}

@@ -1,7 +1,5 @@
-using System.Reflection;
-using System.Threading;
-using RC.Core.Misc;
 using RC.Net;
+using System.Reflection;
 using UnitTest.lockstep;
 using UnitTest.Misc;
 using UnitTest.Properties;
