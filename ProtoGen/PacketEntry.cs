@@ -13,10 +13,13 @@ namespace RC.ProtoGen
 		public string reply;
 		public DTOEntry dto;
 
+		private readonly Interpreter _interpreter;
+
 		public ModuleEntry module { get; }
 
-		public PacketEntry( ModuleEntry module )
+		public PacketEntry( Interpreter interpreter, ModuleEntry module )
 		{
+			this._interpreter = interpreter;
 			this.module = module;
 		}
 
@@ -27,7 +30,7 @@ namespace RC.ProtoGen
 
 		public string FuncName()
 		{
-			return $"PACKET_{this.module.key}_{this.key}";
+			return $"_PACKET_{this.module.key}_{this.key}";
 		}
 
 		public string ClsName()
@@ -54,6 +57,8 @@ namespace RC.ProtoGen
 			output = output.Replace( "[reply]", string.IsNullOrEmpty( this.reply ) ? "false" : "true" );
 			output = output.Replace( "[ns]", ns );
 
+			if ( !Directory.Exists( outputPath ) )
+				Directory.CreateDirectory( outputPath );
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
 		}
 
@@ -118,7 +123,7 @@ namespace RC.ProtoGen
 				return input.Replace( match.Value, string.Empty );
 
 			string[] pair = this.reply.Split( ',' );
-			PacketEntry replyPacket = Interpreter.instance.GetPacket( pair[0].Trim(), pair[1].Trim() );
+			PacketEntry replyPacket = this._interpreter.GetPacket( pair[0].Trim(), pair[1].Trim() );
 
 			string template = match.Groups[2].Value.Replace( "[packet_cls_name]", replyPacket.ClsName() );
 			template = template.Replace( "[packet_func_name]", replyPacket.FuncName() );

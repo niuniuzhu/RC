@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using RC.Core.Misc;
+﻿using RC.Core.Misc;
 using RC.Core.Structure;
-using RC.Game.Protocol;
 using RC.Net;
 using RC.Net.Protocol;
+using System.Collections.Generic;
+using System.Diagnostics;
+using RC.Game.Protocol.CG;
 
 namespace UnitTest.lockstep
 {
@@ -111,7 +111,7 @@ namespace UnitTest.lockstep
 			{
 				actions[i++] = this._actions.Pop();
 			}
-			this.Brocast( ProtocolManager.PACKET_BATTLE_SC_FRAME( actions, this._frame ) );
+			this.Brocast( CGProtoMgr._PACKET_BATTLE_GC_FRAME( actions, this._frame ) );
 		}
 
 		public void HandleAction( _DTO_frame_info dto )

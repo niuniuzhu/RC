@@ -61,17 +61,18 @@ namespace RC.ProtoGen.Properties {
         }
         
         /// <summary>
-        ///   查找类似 namespace Protocol.Gen
+        ///   查找类似 namespace [ns]
         ///{
-        ///	public static class Module
+        ///	public static class [flag]Module
         ///	{
         ///		[modules \n]public const byte [key] = [id];[/modules]
         ///	}
         ///
-        ///	public static class Command
+        ///	public static class [flag]Command
         ///	{
         ///		[packets \n]public const ushort [key] = [id];[/packets]
         ///	}
+        ///
         ///} 的本地化字符串。
         /// </summary>
         internal static string const_template {
@@ -117,10 +118,10 @@ namespace RC.ProtoGen.Properties {
         
         /// <summary>
         ///   查找类似 using System.Collections.Generic;
-        ///using RC.Core.Net;
-        ///using RC.Core.Net.Protocol;
+        ///using RC.Net;
+        ///using RC.Net.Protocol;
         ///
-        ///namespace Protocol.Gen
+        ///namespace [ns]
         ///{
         ///	public class [cls_name] : DTO
         ///	{
@@ -136,7 +137,7 @@ namespace RC.ProtoGen.Properties {
         ///			base.InternalSerialize( buffer );
         ///
         ///			[serialize \n]
-        ///			if ( [cond [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			if ( [condition ||]this.[key [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string dto_template {
             get {
@@ -145,16 +146,26 @@ namespace RC.ProtoGen.Properties {
         }
         
         /// <summary>
+        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt; 
+        /// 的本地化字符串。
+        /// </summary>
+        internal static string internal_structs {
+            get {
+                return ResourceManager.GetString("internal_structs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 // ReSharper disable UnusedMember.Global
         ///// ReSharper disable InconsistentNaming
-        ///using RC.Core.Net;
-        ///using RC.Core.Net.Protocol;
+        ///using RC.Net;
+        ///using RC.Net.Protocol;
         ///using System;
         ///using System.Collections.Generic;
         ///
-        ///namespace Protocol.Gen
+        ///namespace [ns]
         ///{
-        ///	public static class ProtocolManager
+        ///	public static class [flag]ProtoMgr
         ///	{
         ///		private static readonly Dictionary&lt;ushort, Type&gt; DTO_MAP = new Dictionary&lt;ushort, Type&gt;
         ///		{
@@ -163,7 +174,7 @@ namespace RC.ProtoGen.Properties {
         ///
         ///		private static readonly Dictionary&lt;int, Type&gt; PACKET_MAP = new Dictionary&lt;int, Type&gt;
         ///		{
-        ///			[pa [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			[packets \n]{ EncodeID [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string mgr_template {
             get {
@@ -172,28 +183,28 @@ namespace RC.ProtoGen.Properties {
         }
         
         /// <summary>
-        ///   查找类似 using RC.Core.Net;
-        ///using RC.Core.Net.Protocol;
+        ///   查找类似 using RC.Net;
+        ///using RC.Net.Protocol;
         ///
-        ///namespace Protocol.Gen
+        ///namespace [ns]
         ///{
         ///	[Packet( [module], [cmd] )]
         ///	public class [cls_name] : Packet
         ///	{
         ///		[option]public [dto_cls_name] dto;[/option]
         ///
-        ///		public [cls_name]() : base( [module], [cmd] )
+        ///		public [cls_name]() : base( [module], [cmd], [reply] )
         ///		{
         ///		}
         ///
-        ///		[option]public [cls_name]( [dto_cls_name] dto ) : base( [module], [cmd] )
+        ///		[option]public [cls_name]( [dto_cls_name] dto ) : base( [module], [cmd], [reply] )
         ///		{
         ///			this.dto = dto;
         ///		}
         ///
-        ///		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd] )
+        ///		[ctors \n]public [cls_name]( [fields ,][field_type] [field_name][/fields] ) : base( [module], [cmd], [reply] )
         ///		{
-        ///			this.dto = new [dto_cls_name]( [f [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///			this.dto = new [dto_cls_ [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string packet_template {
             get {

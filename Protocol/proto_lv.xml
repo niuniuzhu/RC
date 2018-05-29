@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<packet-defs ver="1.0">
+	<structs>
+		<struct id="100" name="keyframe">
+			<field id="frame" type="int"/>
+		</struct>
+		<struct id="101" name="transform">
+			<field id="position_x" type="float"/>
+			<field id="position_y" type="float"/>
+			<field id="position_z" type="float"/>
+			<field id="rotation_x" type="float"/>
+			<field id="rotation_y" type="float"/>
+			<field id="rotation_z" type="float"/>
+		</struct>
+	</structs>
+	<modules>
+		<module id="100" key="BATTLE">
+			<packet cmd="0" struct="keyframe" key="KEYFRAME"/>
+			<packet cmd="1" key="CREATE"/>
+			<packet cmd="2" key="DESTROY"/>
+			<packet cmd="3" struct="ulong" key="ENTITY_AWAKE"/>
+			<packet cmd="4" struct="ulong" key="ENTITY_START"/>
+			<packet cmd="5" struct="ulong" key="ENTITY_DESTROY"/>
+			<packet cmd="6" struct="transform" key="TRANSFORM"/>
+		</module>
+	</modules>
+</packet-defs>

@@ -50,11 +50,13 @@ namespace RC.ProtoGen
 		private List<FieldEntry> _fields;
 		private List<FieldEntry> _allFields;
 		private readonly SortedDictionary<string, FieldEntry> _fieldsMap = new SortedDictionary<string, FieldEntry>();
+		private bool _isInternal;
 
-		public DTOEntry( ushort id, string name )
+		public DTOEntry( ushort id, string name, bool isInternal )
 		{
 			this.id = id;
 			this.name = name;
+			this._isInternal = isInternal;
 		}
 
 		public void AddField( FieldEntry field )
@@ -74,12 +76,17 @@ namespace RC.ProtoGen
 
 		public void Gen( string outputPath, string ns )
 		{
+			if ( this._isInternal )
+				return;
+
 			string output = this.ProcessCtors( Interpreter.DTO_TEMPLATE );
 			output = this.ProcessSerialize( output );
 			output = this.ProcessFields( output, this.allFields );
 			output = output.Replace( "[cls_name]", this.ClsName() );
 			output = output.Replace( "[ns]", ns );
 
+			if ( !Directory.Exists( outputPath ) )
+				Directory.CreateDirectory( outputPath );
 			File.WriteAllText( Path.Combine( outputPath, this.ClsName() + ".cs" ), output, Encoding.UTF8 );
 		}
 

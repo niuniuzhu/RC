@@ -12,9 +12,6 @@ namespace RC.ProtoGen
 {
 	public class Interpreter
 	{
-		private static Interpreter _instance;
-		public static Interpreter instance => _instance ?? ( _instance = new Interpreter() );
-
 		public static readonly Regex REGEX_CTOR = new Regex( @"\[ctors\s([^\]]+)\](.*?)\[\/ctors\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_CONDITION_CTOR = new Regex( @"\[condition_ctors\s([^\]]+)\](.*?)\[\/condition_ctors\]", RegexOptions.Singleline );
 		public static readonly Regex REGEX_FIELD = new Regex( @"\[fields\s([^\]]+)\](.*?)\[\/fields\]", RegexOptions.Singleline );
@@ -54,10 +51,6 @@ namespace RC.ProtoGen
 			MGR_TEMPLATE = Resources.mgr_template;
 		}
 
-		private Interpreter()
-		{
-		}
-
 		public PacketEntry GetPacket( string moduleId, string cmd )
 		{
 			ModuleEntry module = null;
@@ -81,11 +74,13 @@ namespace RC.ProtoGen
 
 		public void Parse( string text )
 		{
+			this.ParseInternalStructs();
+
 			XML xml = new XML( text );
 			XMLList dtoNodes = xml.Elements( "structs" )[0].Elements();
 			foreach ( XML dtoNode in dtoNodes )//parse structs
 			{
-				if ( !this.CreateStruct( ushort.Parse( dtoNode.GetAttribute( "id" ) ), dtoNode.GetAttribute( "name" ), out DTOEntry dto ) )
+				if ( !this.CreateStruct( ushort.Parse( dtoNode.GetAttribute( "id" ) ), dtoNode.GetAttribute( "name" ), false, out DTOEntry dto ) )
 					this.ParseField( dto, dtoNode, dtoNodes );
 			}
 			XMLList moduleNodes = xml.Elements( "modules" )[0].Elements();
@@ -99,7 +94,7 @@ namespace RC.ProtoGen
 				XMLList packetNodes = moduleNode.Elements();
 				foreach ( XML packetNode in packetNodes ) //parse packets
 				{
-					PacketEntry packet = new PacketEntry( module );
+					PacketEntry packet = new PacketEntry( this, module );
 					packet.id = packetNode.GetAttribute( "cmd" );
 					packet.key = packetNode.GetAttribute( "key" );
 					packet.dto = this.FindDTO( packetNode.GetAttribute( "struct" ) );
@@ -107,6 +102,17 @@ namespace RC.ProtoGen
 						packet.reply = packetNode.GetAttribute( "reply" );
 					module.packets.Add( packet );
 				}
+			}
+		}
+
+		private void ParseInternalStructs()
+		{
+			XML xml = new XML( Resources.internal_structs );
+			XMLList dtoNodes = xml.Elements( "structs" )[0].Elements();
+			foreach ( XML dtoNode in dtoNodes )
+			{
+				if ( !this.CreateStruct( ushort.Parse( dtoNode.GetAttribute( "id" ) ), dtoNode.GetAttribute( "name" ), true, out DTOEntry dto ) )
+					this.ParseField( dto, dtoNode, dtoNodes );
 			}
 		}
 
@@ -126,7 +132,7 @@ namespace RC.ProtoGen
 						{
 							string dtoName = fieldNode.GetAttribute( "struct" );
 							XML subDTONode = FindId( nodeElements, dtoName );
-							if ( !this.CreateStruct( ushort.Parse( subDTONode.GetAttribute( "id" ) ), dtoName, out DTOEntry subDTO ) )
+							if ( !this.CreateStruct( ushort.Parse( subDTONode.GetAttribute( "id" ) ), dtoName, false, out DTOEntry subDTO ) )
 								this.ParseField( subDTO, subDTONode, nodeElements );
 							field.subDTO = subDTO;
 						}
@@ -147,7 +153,7 @@ namespace RC.ProtoGen
 			}
 		}
 
-		private bool CreateStruct( ushort id, string name, out DTOEntry dto )
+		private bool CreateStruct( ushort id, string name, bool isInternal, out DTOEntry dto )
 		{
 			int count = this._dtos.Count;
 			for ( int i = 0; i < count; i++ )
@@ -158,7 +164,7 @@ namespace RC.ProtoGen
 					return true;
 				}
 			}
-			dto = new DTOEntry( id, name );
+			dto = new DTOEntry( id, name, isInternal );
 			this._dtos.Add( dto );
 			return false;
 		}
@@ -182,7 +188,7 @@ namespace RC.ProtoGen
 			return null;
 		}
 
-		public void Gen( string outputPath, string ns )
+		public void Gen( string outputPath, string flag, string ns )
 		{
 			foreach ( DTOEntry dto in this._dtos )
 				dto.Gen( outputPath, ns );
@@ -191,19 +197,22 @@ namespace RC.ProtoGen
 				foreach ( PacketEntry packet in module.packets )
 					packet.Gen( outputPath, ns );
 
-			this.GenManager( outputPath, ns );
-			this.GenConst( outputPath, ns );
+			this.GenManager( outputPath, flag, ns );
+			this.GenConst( outputPath, flag, ns );
 		}
 
-		private void GenManager( string outputPath, string ns )
+		private void GenManager( string outputPath, string flag, string ns )
 		{
 			string output = this.ProcessDTOs( MGR_TEMPLATE );
 			output = this.ProcessPackets( output );
 			output = this.ProcessDTOFuncs( output );
 			output = this.ProcessPacketFuncs( output );
 			output = output.Replace( "[ns]", ns );
+			output = output.Replace( "[flag]", flag.ToUpper() );
 
-			File.WriteAllText( Path.Combine( outputPath, "ProtocolManager.cs" ), output, Encoding.UTF8 );
+			if ( !Directory.Exists( outputPath ) )
+				Directory.CreateDirectory( outputPath );
+			File.WriteAllText( Path.Combine( outputPath, flag.ToUpper() + "ProtoMgr.cs" ), output, Encoding.UTF8 );
 		}
 
 		private string ProcessDTOs( string input )
@@ -297,8 +306,8 @@ namespace RC.ProtoGen
 		{
 			input = this.ProcessPacketFuncs0( input );
 			input = this.ProcessPacketFuncs1( input );
-			input = this.ProcessPacketFuncs2( input );
-			input = this.ProcessPacketFuncs3( input );
+			//input = this.ProcessPacketFuncs2( input );
+			//input = this.ProcessPacketFuncs3( input );
 
 			return input;
 		}
@@ -495,7 +504,7 @@ namespace RC.ProtoGen
 			return input;
 		}
 
-		private void GenConst( string outputPath, string ns )
+		private void GenConst( string outputPath, string flag, string ns )
 		{
 			string input = Resources.const_template;
 			StringBuilder sb = new StringBuilder();
@@ -539,8 +548,11 @@ namespace RC.ProtoGen
 			}
 			input = input.Replace( match.Value, sb.ToString() );
 			input = input.Replace( "[ns]", ns );
+			input = input.Replace( "[flag]", flag.ToUpper() );
 
-			File.WriteAllText( Path.Combine( outputPath, "ProtocolConsts.cs" ), input, Encoding.UTF8 );
+			if ( !Directory.Exists( outputPath ) )
+				Directory.CreateDirectory( outputPath );
+			File.WriteAllText( Path.Combine( outputPath, flag.ToUpper() + "ProtoConsts.cs" ), input, Encoding.UTF8 );
 		}
 	}
 }

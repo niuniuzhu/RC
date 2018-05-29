@@ -2,8 +2,7 @@
 using RC.Net;
 using System.Net.Sockets;
 using System.Threading;
-using RC.Game.Protocol;
-using RC.Net.Protocol;
+using RC.Game.Protocol.CG;
 
 namespace UnitTest.NetworkTest
 {
@@ -38,8 +37,14 @@ namespace UnitTest.NetworkTest
 			switch ( e.type )
 			{
 				case SocketEvent.Type.Connect:
+					// make RPC calls
 					for ( int i = 0; i < 10; i++ )
-						NetworkManager.Send( CLIENT_NAME, ProtocolManager.PACKET_TEST_CS_RPC( "call" ), this.RPCTest );
+						NetworkManager.Send( CLIENT_NAME, CGProtoMgr._PACKET_TEST_CG_RPC( "test" ),
+											 ( token, packet ) =>
+											 {
+												 _PACKET_TEST_GC_RPC p = ( _PACKET_TEST_GC_RPC )packet;
+												 Logger.Log( p.dto.value );
+											 } );
 					break;
 			}
 		}
@@ -64,10 +69,10 @@ namespace UnitTest.NetworkTest
 
 				case SocketEvent.Type.Receive:
 					//Logger.Log( $"Received: {e.packet}" );
-					if ( e.packet.module == Module.TEST &&
-						 e.packet.command == Command.CS_RPC )
+					if ( e.packet.module == CGModule.TEST &&
+						 e.packet.command == CGCommand.CG_RPC )
 					{
-						_PACKET_TEST_CS_RPC packet = ( _PACKET_TEST_CS_RPC )e.packet;
+						_PACKET_TEST_CG_RPC packet = ( _PACKET_TEST_CG_RPC )e.packet;
 						NetworkManager.Send( SERVER_NAME, e.userToken.id, packet.Reply( "return" ) );
 					}
 					break;
@@ -77,12 +82,6 @@ namespace UnitTest.NetworkTest
 						Logger.Log( $"Socket error, type:{e.type}, code:{e.errorCode}, msg:{e.msg}" );
 					break;
 			}
-		}
-
-		private void RPCTest( IUserToken token, Packet packet )
-		{
-			_PACKET_TEST_SC_RPC p = ( _PACKET_TEST_SC_RPC )packet;
-			Logger.Log( p.dto.value );
 		}
 	}
 }

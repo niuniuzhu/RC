@@ -1,6 +1,6 @@
 ﻿using RC.Core.FMath;
 using RC.Game.Core;
-using RC.Game.Protocol;
+using RC.Game.Protocol.LV;
 
 namespace RC.Game.Logic.Components
 {
@@ -43,7 +43,7 @@ namespace RC.Game.Logic.Components
 
 		protected override void OnSynchronize()
 		{
-			this.owner.battle.transmitter.SendAll( ProtocolManager.PACKET_LV_BATTLE_TRANSFORM(
+			this.owner.battle.transmitter.SendAll( LVProtoMgr._PACKET_BATTLE_TRANSFORM(
 													   ( float )this.position.x, ( float )this.position.y,
 													   ( float )this.position.z,
 													   ( float )this.rotation.x, ( float )this.rotation.y,

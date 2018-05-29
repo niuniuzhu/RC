@@ -1,7 +1,8 @@
 ﻿using RC.Core.Misc;
 using RC.Core.Structure;
 using RC.Game.Core;
-using RC.Game.Protocol;
+using RC.Game.Protocol.CG;
+using RC.Game.Protocol.LV;
 using RC.Net;
 
 namespace RC.Game.Logic
@@ -77,7 +78,7 @@ namespace RC.Game.Logic
 					this.Simulate( this._msPerFrame );
 
 					if ( this.frame == this._nextKeyFrame )
-						this.transmitter.SendAll( ProtocolManager.PACKET_LV_BATTLE_KEYFRAME( this.frame ) );
+						this.transmitter.SendAll( LVProtoMgr._PACKET_BATTLE_KEYFRAME( this.frame ) );
 
 					this._lastElapsed -= this._msPerFrame;
 				}

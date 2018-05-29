@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<packet-defs ver="1.0">
+	<structs>
+		<struct id="0" name="byte">
+			<field id="value" type="byte" name="值"/>
+		</struct>
+		<struct id="1" name="bool">
+			<field id="value" type="bool" name="值"/>
+		</struct>
+		<struct id="2" name="short">
+			<field id="value" type="short" name="值"/>
+		</struct>
+		<struct id="3" name="ushort">
+			<field id="value" type="ushort" name="值"/>
+		</struct>
+		<struct id="4" name="int">
+			<field id="value" type="int" name="值"/>
+		</struct>
+		<struct id="5" name="uint">
+			<field id="value" type="uint" name="值"/>
+		</struct>
+		<struct id="6" name="float">
+			<field id="value" type="float" name="值"/>
+		</struct>
+		<struct id="7" name="long">
+			<field id="value" type="long" name="值"/>
+		</struct>
+		<struct id="8" name="ulong">
+			<field id="value" type="ulong" name="值"/>
+		</struct>
+		<struct id="9" name="double">
+			<field id="value" type="double" name="值"/>
+		</struct>
+		<struct id="10" name="string">
+			<field id="value" type="string" name="值"/>
+		</struct>
+	</structs>
+</packet-defs>

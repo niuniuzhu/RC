@@ -12,6 +12,7 @@
 		<None Remove="templates\const_template.txt" />
 		<None Remove="templates\convertions.txt" />
 		<None Remove="templates\dto_template.txt" />
+		<None Remove="templates\internal_structs.xml" />
 		<None Remove="templates\mgr_template.txt" />
 		<None Remove="templates\packet_template.txt" />
 	</ItemGroup>
@@ -20,6 +21,7 @@
 		<EmbeddedResource Include="templates\const_template.txt" />
 		<EmbeddedResource Include="templates\convertions.txt" />
 		<EmbeddedResource Include="templates\dto_template.txt" />
+		<EmbeddedResource Include="templates\internal_structs.xml" />
 		<EmbeddedResource Include="templates\mgr_template.txt" />
 		<EmbeddedResource Include="templates\packet_template.txt" />
 	</ItemGroup>

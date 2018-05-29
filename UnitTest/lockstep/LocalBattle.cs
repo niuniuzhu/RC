@@ -1,7 +1,7 @@
 ﻿using RC.Game.Core;
 using RC.Game.Logic;
 using RC.Game.Logic.Components;
-using RC.Game.Protocol;
+using RC.Game.Protocol.CG;
 using RC.Net;
 
 namespace UnitTest.lockstep
@@ -34,9 +34,9 @@ namespace UnitTest.lockstep
 					break;
 
 				case SocketEvent.Type.Receive:
-					if ( e.packet.module == Module.BATTLE && e.packet.command == Command.SC_FRAME )
+					if ( e.packet.module == CGModule.BATTLE && e.packet.command == CGCommand.GC_FRAME )
 					{
-						this._lBattle?.ProcessServerKeyFrame( ( ( _PACKET_BATTLE_SC_FRAME )e.packet ).dto );
+						this._lBattle?.ProcessServerKeyFrame( ( ( _PACKET_BATTLE_GC_FRAME )e.packet ).dto );
 					}
 					break;
 

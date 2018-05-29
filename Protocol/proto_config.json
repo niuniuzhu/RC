@@ -1,0 +1,17 @@
+{
+    "version": "1.0.0",
+    "tasks": [
+        {
+            "flag": "lv",
+            "protocol": "proto_lv.xml",
+            "output_path": "./lv",
+            "namespace": "RC.Game.Protocol.LV"
+        },
+        {
+            "flag": "cg",
+            "protocol": "proto_cg.xml",
+            "output_path": "./cg",
+            "namespace": "RC.Game.Protocol.CG"
+        }
+    ]
+}

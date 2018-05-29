@@ -127,6 +127,9 @@
   <data name="dto_template" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\templates\dto_template.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
   </data>
+  <data name="internal_structs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\templates\internal_structs.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="mgr_template" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\templates\mgr_template.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
   </data>

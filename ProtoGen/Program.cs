@@ -8,16 +8,37 @@ namespace RC.ProtoGen
 	{
 		static int Main( string[] args )
 		{
-			if ( args.Length < 2 )
+			string configPath = args.Length == 0 ? Path.Combine( Directory.GetCurrentDirectory() + "/proto_config.json" ) : args[0];
+
+			string content;
+			try
 			{
-				Console.WriteLine( "invalid arguments" );
+				content = File.ReadAllText( configPath );
+			}
+			catch ( Exception e )
+			{
+				Console.WriteLine( e );
 				return -1;
 			}
-			string file = args[0];
-			string text = File.ReadAllText( file, Encoding.UTF8 );
-			Interpreter interpreter = Interpreter.instance;
-			interpreter.Parse( text );
-			interpreter.Gen( args[1], args[2] );
+
+			Config config = new Config( content );
+			foreach ( Config.Task task in config.tasks )
+			{
+				string file = task.protocol;
+				string text;
+				try
+				{
+					text = File.ReadAllText( file, Encoding.UTF8 );
+				}
+				catch ( Exception e )
+				{
+					Console.WriteLine( e );
+					return -1;
+				}
+				Interpreter interpreter = new Interpreter();
+				interpreter.Parse( text );
+				interpreter.Gen( task.outputPath, task.flag, task.@namespace );
+			}
 			return 0;
 		}
 	}
